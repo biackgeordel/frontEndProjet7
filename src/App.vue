@@ -1,28 +1,54 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+
+        <div>
+          <the-header></the-header>
+          <component :is="page"></component>
+        </div>
+          
+    
+      
+  
+        
+      
+          
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import TheForm from './components/TheForm.vue';
+   import Accueil from './components/user/Accueil.vue';
+   import TheHeader from './components/user/TheHeader.vue';
+    import { eventBus } from './main';
 
 export default {
-  name: 'App',
+  name: 'app',
   components: {
-    HelloWorld
+    TheForm,
+   Accueil,
+    TheHeader
+   
+  },
+  data(){
+    return{
+      page:eventBus.page
+    }
+
+  },
+  created(){
+    this.page=eventBus.page;
+    eventBus.$on('update:page',(page)=>{
+      this.page=page;
+       console.log("page de app.vue");
+      console.log("test");
+    })
+  
+
   }
-}
+  }
+  
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
