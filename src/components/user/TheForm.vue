@@ -1,11 +1,12 @@
 <template>
         <div class="container-form">
             <div class="element_form">
-                  <h2>
+                  <h1>
                 Groupomania social, partagez et restez en contact avec votre entourage.
-                </h2>
+                </h1>
             </div>
             <div class="element_form">
+                <h2>Connectez-vous à votre compte</h2>
                 <form @submit.prevent="connexion" class="form">
                       <div class="mb-3">
                              <label for="validationEmail" class="form-label">Email</label>
@@ -16,7 +17,7 @@
                         </div>
                           <div class="mb-3">
                                   <label for="validationPassword" class="form-label">password</label>
-                                  <input ref="password" @input="validationPass" v-model="form.password" type="password" class="form-control " id="validationPassword" value="Mark" required>
+                                  <input ref="password" @input="validationPass" v-model="form.password" type="password" class="form-control " id="validationPassword" required>
                                     <div class="invalid-feedback">
                                       {{msg}}
                                      </div>
@@ -36,7 +37,7 @@
 
 
 <script>
-import { eventBus } from '../main';
+import { eventBus } from '../../main';
 export default{
    
     name:"TheForm",
@@ -110,48 +111,53 @@ export default{
 </script>
 <style lang="scss" scoped>
 .container-form{
-   // border:1px solid red;
+    box-sizing: border-box;
+      height:100vh;
+    display: flex;
+    justify-content:space-between;
+   background-color:#2c3e50;
    @media (max-width:950px){
        flex-direction: column;
        align-items: center;
    }
-    height:70vh;
-    display: flex;
-    justify-content:space-between;
+ 
     .element_form{
         width:50%;
         height:100%;
+        
          @media (max-width:950px){
              width:100%;
    }
         
        // border:1px solid green;
-        h2{
+        h1,h2{
             text-align:center;
-            padding-top:20%;
-            padding-left:5%;
-            color:grey;
+            padding-top:10%;
+            padding-left:-10%;
+            color:#ffffff;//#95a5a6;
         }
     }
     .form{
         display: flex;
         flex-direction: column;
-        margin-top:5%;
         padding-left:10%;
-        .form-control{
-            width:80%;
-            
-        }
+         width:80%;
+         margin-top:2%;
+         height:100%;
         .btn{
-            margin-top:10%;
-            margin-right:25%;
+            width:30%;
+            margin-left:30%;
+     
             @media (max-width:950px){
-             width:50%;
-             margin-right:100% !important
+             margin-right:100% !important;
+                width:40%;
 
    }
         }
     }
+}
+label{
+    color:#ecf0f1;
 }
 
 

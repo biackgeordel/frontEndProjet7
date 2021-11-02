@@ -1,13 +1,28 @@
 import Vue from 'vue'
+import router from './router'
 import App from './App.vue'
+import axios from 'axios';
+Vue.prototype.$http=axios;// on crée un prototype $http pour le rendre accessible sous $http
 
+//axios.defaults.headers.common['authorization']='12233';
+axios.defaults.baseURL="http://localhost:3000/api/auth"
+axios.interceptors.request.use((req)=>{
+  console.log(req)
+  return req;
+});
+/*axios.interceptors.response.use((res)=>{
+  console.log(res)
+  return res;
+})*/
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
  export const eventBus=new Vue({
 
   data:{
-    user:{},
-
+    user:{
+      username:'',
+      idUser:''
+    },
     message:[{
       id:1,
       urlImage:"https://gifsdomi.files.wordpress.com/2012/06/gif-accident-20.gif",
@@ -49,19 +64,15 @@ Vue.config.productionTip = false
 
 
     }*/
-    page:'TheForm'
+    page:'CreateForm'
 
   },
   methods:{
+    changerUser(user){
+      this.user=user;
+      this.$emit('update:user',this.user);
+    },
 
-    connexion(user){
-        console.log("mon user");
-        console.log(user);
-        this.user=user;
-        this.$emit('update:user',this.user);
-      },
-
-    
     changerPage(page){
       this.page=page;
       console.log(this.page);
@@ -69,7 +80,6 @@ Vue.config.productionTip = false
 
     },
     ajouterCommentaire(msg){
-     
         this.message.forEach((message)=>{
           console.log("valeur  id message :"+message.id);
           console.log("valeur  id commentaire :"+msg.id);
@@ -83,19 +93,11 @@ Vue.config.productionTip = false
 
 
         });
-      }
-
-    }
-     
-
-      
-    
-
-    
-  
-
-});
+      },
+}
+ });
 
 new Vue({
+  router,
   render: h => h(App),
 }).$mount('#app')

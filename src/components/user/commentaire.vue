@@ -1,6 +1,7 @@
 <template>
     
  <div>
+        <div class="commande">
              <h6>commentaire:{{nombreDeCommentaire}}</h6>
   
         <button type="button" class="btn btn-outline-info">
@@ -12,6 +13,7 @@
         <button  @click="msgbutton=!msgbutton" type="button" class="btn btn-outline-info">
              <span><i class="bi bi-chat"></i></span>
         </button>
+        </div>
             
               <div v-show="msgbutton" class="form-floating">
                  <textarea v-model="msg" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
@@ -21,16 +23,18 @@
                 <div>
                    
                      <div   v-for="(val,index) in tabcommentaire" :key="index">
-                         <div class="bg-success p-2 border  text-dark bg-opacity-10" v-if="id===val.id">
-
-                                <div class="user">
-                                    <span class="user__nom">{{user.email}} </span>
-                                    <span class="user__date">{{val.date.year}} à {{val.date.heure}}</span>
+                         <div class="box-commentaire" v-if="id===val.id">
+                                  <div class="id-user" >
+                                 <div class="photo-user">
+                                    <img src="../../assets/logo.png" alt="photo user"/>
+                                    </div>
+                                 </div>
+                          
+                           <div class="bg-success p-2 border  text-dark bg-opacity-10"> 
+                                <p>{{val.description}}</p>
+                                {{val.date.year}} à {{val.date.heure}}
                                 </div>
-                                
-                                <p>{{val.description}}</p> 
-                         </div>
-                       
+                         </div> 
                     </div>     
                    
                  
@@ -69,7 +73,7 @@ export default{
                     year:date.toLocaleDateString(),
                     heure:date.toLocaleTimeString()
                 },
-                user:eventBus.user
+                user:this.user
                 
             }
           
@@ -113,33 +117,48 @@ button{
 
 }
 textarea{
-    width:30vw !important;
-    margin:10px;
+    width:100% !important;
+    margin:5px;
 }
 .bg-success{
-    margin-top:10px;
-    margin-bottom:10px;
-    display: flex;
-    justify-content: space-between;
-    width:100%;
-    height:20vh;
+   // margin-bottom:5%;
+    width:70%;
+    //justify-content: space-between;
+   // height:10vh;
 }
-.user{
-    display: flex;
-    font-size:10px;
+.box-commentaire{
+   margin-bottom:2%;
+   display:flex;  
+   margin-top:2%;
+
+   justify-content: center;
+    //height:30vh;
+}
+.form-floating{
+   position:relative;
+   width:80%;
+   left:10%;
+}
+.commande{
+    width:80%;
+   // border:1px solid red;
+    margin: auto;
+}
+.id-user{
+ height:5vw;
+ .photo-user{
+    width:5vw;
+    height:5vw;
+     img{
+   display: inline-block;
+   object-fit: cover;
     border-radius:50%;
-    position:relative;
-    right:-2vw;
-    background-color:blueviolet;
-    flex-direction: column;
-    &__nom{
-        width:50%;
-        background-color: aqua;
-        border-radius:50%;
+    background-color: aqua;
+    width:100%;
+    height:100%;
     }
-    &__date{
-        width:50%;
-    }
+ }
 }
+
 
 </style>
