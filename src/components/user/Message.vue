@@ -7,7 +7,7 @@
                     <img src="../../assets/logo.png" alt="photo user"/>
                  </div>
                  <div class="p-3">
-                      <span>identité d'user</span> 
+                      <span>{{getUserMessage.toUpperCase()}}</span> 
                  </div> 
                
                 </div>
@@ -31,7 +31,21 @@
 <script>
 export default{
     name:"Message",
-    props:['items']
+    props:['items','user'],
+    computed:{
+       getUserMessage(){
+          let nom="" ;  
+           this.user.forEach(element => {
+              if(element.idUser===this.items.idUser){
+                 nom=element.username;
+              }
+              
+           });  
+          
+          console.log(nom);
+          return nom;
+       }
+    }
 
 }
 

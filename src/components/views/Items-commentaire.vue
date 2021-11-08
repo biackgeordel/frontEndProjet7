@@ -1,12 +1,12 @@
 <template>
-   <commentaire :id='id'></commentaire> 
+   <commentaire :idMessage='idMessage'></commentaire> 
     
 </template>
 <script>
-import commentaire from "./commentaire.vue"
+import commentaire from "../user/commentaire.vue"
 export default{
 name:'Item-commentaire',
-props:['id'],
+props:['idMessage'],
 components:{
     commentaire
 }

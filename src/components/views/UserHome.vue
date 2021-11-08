@@ -10,7 +10,7 @@
 
 </template>
 <script>
-import ListMessage from './List-message.vue';
+import ListMessage from '../views/List-message.vue';
 export default{
 
     name:'UserHome',

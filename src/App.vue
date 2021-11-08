@@ -9,7 +9,7 @@
 <script>
 
 
-   import TheHeader  from './components/user/TheHeader.vue';
+   import TheHeader  from './components/views/TheHeader.vue';
 
 export default {
   name: 'app',

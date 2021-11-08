@@ -2,9 +2,9 @@ import Vue from 'vue';
 import vueRouer from 'vue-router';
 import CreateForm from './components/user/CreateForm.vue';
 import TheForm from './components/user/TheForm.vue';
-import Accueil from './components/user/Accueil.vue';
+import Accueil from './components/views/Accueil.vue';
 import TheNewMessage  from './components/user/TheNewMessage.vue';
-import UserHome from './components/user/UserHome.vue';
+import UserHome from './components/views/UserHome.vue';
 //on ajoute vueRouter comme plugin a Vue
 Vue.use(vueRouer);
 //on export une instance vueRouter

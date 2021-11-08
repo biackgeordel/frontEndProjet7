@@ -135,25 +135,27 @@ export default{
             let formData=new FormData();
             formData.append('message',JSON.stringify(this.message));
             formData.append('image',this.file);
-            
-            this.$http.post('/created',formData,
-                {
-                    headers:{'Content-Type': 'multipart/form-data'}
-                    }
-            )
-            .then(response=>{
-                console.log(response);
-                if(response.status===200){
-                    //on fait une redirection en utilisant la go(-1) 
-                    this.$router.go(-1);
-                }
-                
-            }).catch(error=>{//gerer les erreurs duserveurs
-                console.log(error);
+              this.$http.post('/created',formData,
+                 {
+                     headers:{'Content-Type': 'multipart/form-data'}
+                  }
+             )
+             .then(response=>{
+                 console.log(response);
+                   this.$router.push({
+                path:`/Accueil/${this.user}`//user stocké en parametre
             })
-        }
+      
+            }).catch(error=>{//gerer les erreurs duserveurs
+                 console.log(error);
+             }) 
 
-    
+            
+         
+            
+               //on fait une redirection en utilisant la go(-1) 
+         // this.$router.go(-1)
+    }
     }
 
 

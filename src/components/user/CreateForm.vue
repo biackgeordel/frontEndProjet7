@@ -138,6 +138,7 @@ export default{
                          });
                   //on met à jour l'user sur eventBus
                   eventBus.changerUser({...this.user});
+                  localStorage.setItem('user',JSON.stringify(this.user));
                 }
                 
               }).catch(error=>{

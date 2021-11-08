@@ -37,7 +37,7 @@
                              <a class="nav-link" aria-current="page"  >Notification <i class="bi bi-bell"></i></a>
                         </li>
                         <li class="nav-item">
-                             <a class="nav-link" aria-current="page"  >Déconnexion <i class="bi bi-power"></i></a>
+                             <a   @click.prevent="deconnexion" class="nav-link" aria-current="page"  >Déconnexion <i class="bi bi-power"></i></a>
                         </li>
 
 
@@ -53,12 +53,22 @@
 
 <script>
 import { eventBus } from '../../main';
-
 export default{
     name:"TheHeader",
         data(){
             return{
                 user:eventBus.user
+            }
+        },
+        methods:{
+            deconnexion(){
+                console.log(this.user);
+                localStorage.removeItem('user');
+                this.user={};
+                this.$router.push({
+                    path:'/'
+                })
+             
             }
         },
      
@@ -72,13 +82,23 @@ export default{
      created(){
          this.user=eventBus.user;
          console.log('user: ',this.user);
-         eventBus.$on('update:user',(user)=>{
+        eventBus.$on('update:user',(user)=>{
              this.user=user;
              console.log('on :',this.user);
          })
+    },
+      mounted(){
+            if(localStorage.getItem('user')){
+                  eventBus.user=JSON.parse(localStorage.getItem('user'));
+                  console.log('user existe:',eventBus.user)
+                  this.user=eventBus.user;
+              }
+             
+         }
 
-     }
 
+     
+   
     
 
 }

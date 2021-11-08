@@ -1,13 +1,13 @@
 <template>
- <message :items="items"></message> 
+ <message :user="user" :items="items"></message> 
     
 </template>
 <script>
-import Message from './Message.vue'
+import Message from '../user/Message.vue'
 export default{
   components: { Message },
 name:'Item-message',
-props:['items']
+props:['items','user']
 
 }
 
