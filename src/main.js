@@ -17,40 +17,6 @@ axios.interceptors.request.use((req)=>{
 })*/
 
 Vue.config.productionTip = false;
- export const eventBus=new Vue({
-
-  data:{
-    user:{
-      username:'',
-      idUser:''
-    },
-    message:[],
-    commentaire:[],
-
-
-  },
-  methods:{
-    changerUser(user){
-      this.user=user;
-      this.$emit('update:user',this.user);
-    },
-    ajouterCommentaire(msg){
-        this.message.forEach((message)=>{
-          console.log("valeur  id message :"+message.idMessage);
-          console.log("valeur  id commentaire :"+msg.idMessage);
-
-          if(msg.idMessage===message.idMessage){
-            console.log("message ok");
-            this.commentaire=[...this.commentaire,msg];
-            this.commentaire.slice(msg);
-            this.$emit('update:commentaire',this.commentaire);
-          }
-
-
-        });
-      },
-}
- });
 
 new Vue({
   store,

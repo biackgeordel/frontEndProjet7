@@ -10,7 +10,7 @@
                              <span class="navbar-toggler-icon"></span>
                     </button>
              <div  class="collapse  navbar-collapse" id="navbarSupportedContent">
-                 <ul v-if="!user.username" class=" navbar-nav">
+                 <ul v-if="!pseudo" class=" navbar-nav">
                           <li class="nav-item" >
                              <router-link  :test="lien" 
                              class="nav-link"
@@ -31,7 +31,7 @@
                     </ul>
                    <ul  v-else class=" navbar-nav">
                          <li class="nav-item" >
-                            <a class="nav-link " aria-current="page">{{user.username}} <i class="bi bi-person-circle"></i></a>
+                            <a class="nav-link " aria-current="page">{{pseudo}} <i class="bi bi-person-circle"></i></a>
                         </li>
                           <li class="nav-item">
                              <a class="nav-link" aria-current="page"  >Notification <i class="bi bi-bell"></i></a>
@@ -45,31 +45,40 @@
                     </ul>
                 </div>
             </nav>
-    
+        
         </header>
 
 </template>
-
-
 <script>
-import { eventBus } from '../../main';
+
 export default{
     name:"TheHeader",
-        data(){
-            return{
-                user:eventBus.user
-            }
-        },
+    data(){
+        return {
+            pseudo:""
+        }
+    },
+    created(){
+        if(localStorage.getItem('user')){
+            const tab=this.$store.state.user;
+            tab.forEach(element=>{
+                if(element===JSON.parse(localStorage.getItem('user')).idUser){
+                    this.pseudo=element.username;
+                }
+
+            });
+        }
+    },
+
         methods:{
             deconnexion(){
-                console.log(this.user);
                 localStorage.removeItem('user');
-                this.user={};
-                this.$router.push({
+                this.pseudo="";
+                         this.$router.push({
                     path:'/'
                 })
              
-            }
+            },
         },
      
      computed:{
@@ -77,29 +86,12 @@ export default{
              console.log('computed:',this.$route.name);
            return  this.$route.name;
            
-         }
-     },
-     created(){
-         this.user=eventBus.user;
-         console.log('user: ',this.user);
-        eventBus.$on('update:user',(user)=>{
-             this.user=user;
-             console.log('on :',this.user);
-         })
-    },
-      mounted(){
-            if(localStorage.getItem('user')){
-                  eventBus.user=JSON.parse(localStorage.getItem('user'));
-                  console.log('user existe:',eventBus.user)
-                  this.user=eventBus.user;
-              }
-             
-         }
-
-
+         },
+      
      
-   
+        }
     
+       
 
 }
 

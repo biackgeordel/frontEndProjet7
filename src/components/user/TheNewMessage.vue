@@ -43,7 +43,6 @@
     </div>
 </template>
 <script>
-import { eventBus } from "../../main";
 export default{
     name:"TheNewMessage",
     props:['user'],
@@ -69,7 +68,7 @@ export default{
             message:{
                 title:"",
                 description:"",
-                idUser:eventBus.user.idUser,
+                idUser:"",
             },
             valid:true,
             validImage:false,
@@ -78,8 +77,10 @@ export default{
 
         }
     },
-    created(){
-        this.message.idUser=eventBus.user.idUser;
+    mounted(){
+        //on recupere user stocké dans le localStorage
+        this.message.idUser=JSON.parse(localStorage.getItem('user')).idUser;
+        console.log('mounted newmessage user:',this.message.idUser)
 
     },
     methods:{

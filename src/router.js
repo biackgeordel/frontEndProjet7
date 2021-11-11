@@ -5,6 +5,7 @@ import TheForm from './components/user/TheForm.vue';
 import Accueil from './components/views/Accueil.vue';
 import TheNewMessage  from './components/user/TheNewMessage.vue';
 import UserHome from './components/views/UserHome.vue';
+import Profil from './components/user/Profil-user.vue'
 //on ajoute vueRouter comme plugin a Vue
 Vue.use(vueRouer);
 //on export une instance vueRouter
@@ -64,6 +65,12 @@ export default new vueRouer({
             component:TheForm
 
         },
+        {
+            path:'/profil/:user',
+            name:'profil',
+            component:Profil,
+          
+        }
    
 
 

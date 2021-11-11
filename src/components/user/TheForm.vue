@@ -7,7 +7,7 @@
             </div>
             <div class="element_form">
                 <h2>Connectez-vous à votre compte</h2>
-                <form @submit.prevent="connexion" class="form">
+                <form @submit.prevent="connexion(form)" class="form">
                       <div class="mb-3">
                              <label for="validationEmail" class="form-label">Email</label>
                              <input type="email" @input="validationEmail" v-model="form.email" class="form-control"  id="validationEmail"  required>
@@ -37,7 +37,6 @@
 
 
 <script>
-import { eventBus } from '../../main';
 export default{
    
     name:"TheForm",
@@ -84,13 +83,33 @@ export default{
                       this.validEmail=true;
                 }
            },
-           connexion(){
-               console.log({...this.form});
-               eventBus.connexion({...this.form});
-               eventBus.changerPage('Accueil');
-               console.log(this.$parent);
-               
-           },
+              connexion(user){
+             this.$http.post('/login',user).
+             then(response=>{
+                 console.log(response);
+                 if(response.status===200){
+            //on recupere les données de l'user stockées dans la BD
+                  this.user={
+                 username:response.data.username,
+                 idUser:response.data.idUser
+                  };
+                  console.log('mon user :',this.user);
+                 console.log('mon user :',this.user.username)
+                 //on fait la redirection sur la route accueil on le passe un paramètre 
+                 // user=user.username
+                  this.$router.push({
+                      path:`Accueil/${this.user.username}`   
+                         });
+                  localStorage.setItem('user',JSON.stringify(this.user));
+                }
+                
+              }).catch(error=>{
+               console.log(error);
+                this.msg=`${error.response.statusText} :${error.response.data.msg}`;
+                 this.validErrorServer=true;
+              })   
+
+    },
    
     },
     computed:{

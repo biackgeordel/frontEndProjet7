@@ -27,7 +27,7 @@
                 </div>
                 <div>
                    <div v-show="showCommentaire">
-                     <div   v-for="(val,index) in tabcommentaire" :key="index">
+                     <div   v-for="(val,index) in commentaires" :key="index">
                          <div class="box-commentaire" v-if="idMessage===val.idMessage">
                                   <div class="id-user" >
                                  <div class="photo-user">
@@ -54,7 +54,7 @@
     
 </template>
 <script>
-import {eventBus} from '../../main';
+
 export default{
     name:"Commentaire",
     directives:{
@@ -66,18 +66,19 @@ export default{
                 el.style.borderRadius="1.5vw";
                 el.style.lineHeight="1.5";
                 el.style.paddingTop="2%";
-                el.style.paddingLeft="2%";
-
-                
-                
+                el.style.paddingLeft="2%";        
         }
+    },
+    mounted(){
+        this.user=JSON.parse(localStorage.getItem('user')).idUser;
+        console.log("mounted user:",this.user);
     },
     data(){
         return {
             msgbutton:false,//boolean pour faire appparaitre la zone de saisie
-            tabcommentaire:eventBus.commentaire,//array contenant tous les commentaires
+           tabcommentaire:[],//array contenant tous les commentaires
            msg:"",//contenu du textarea
-           user:eventBus.user,//on recupère l'user
+           user:" ",// identifiant de  l'user
             showCommentaire:true
         }
        
@@ -85,22 +86,36 @@ export default{
      props:['idMessage'],//props contenant l'id des messages
     methods:{
         publier(){
-                console.log(this.idMessage);
+                //console.log(this.idMessage);
             let date=new Date();
-            console.log(date.toLocaleDateString());
+            //console.log(date.toLocaleDateString());
             //objet contenant le message de l'user
             let msg={
                  idMessage:this.idMessage,//id du message
                 description:this.msg,
                 date:date.toLocaleDateString(),
                    
-                user:this.user, 
+                idUser:this.user, 
             }
+                console.log('publier',msg);
+                 /*  this.$http.post('/addCommentaire',msg,{
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            .then(response=>{
+                const com=response.data;
+                this.tabcommentaire=[...this.tabcommentaire,com];
+            }).catch(error=>{
+                console.log(error);
+            });*/
+            console.log(this.tabcommentaire);
           
-            
-           eventBus.ajouterCommentaire({...msg});
+            this.$store.dispatch('fetchCommentaire',msg);
+            console.log('message store :',this.$store.state.commentaire);
+           /*eventBus.ajouterCommentaire({...msg});
            console.log("tableau comentaire");
-           console.log(eventBus.commentaire);
+           console.log(eventBus.commentaire);*/
            this.msgbutton=false;
              this.msg="";
         },
@@ -108,19 +123,21 @@ export default{
         
     },
     created(){
-   
-        this.tabcommentaire=eventBus.commentaire;
+        this.$store.dispatch('fetchAllCommentaire');
+        
+       /* this.tabcommentaire=eventBus.commentaire;
         eventBus.$on('update:commentaire',(msg)=>{
             console.log('table commentaire ',eventBus.commentaire);
                 this.tabcommentaire=msg;
 
-        });
+        });*/
     },
     computed:{
         //affiche le nbre de commentaire d'un message
         nombreDeCommentaire(){
+            const tab=this.$store.state.commentaire;
                     let count=0;
-            this.tabcommentaire.forEach(element => {
+        tab.forEach(element => {
                 if(element.idMessage===this.idMessage){
                     count++;
                     if(count>3){
@@ -130,6 +147,9 @@ export default{
                 
             });
             return count;
+        },
+        commentaires(){
+            return this.$store.state.commentaire;
         }
     }
 

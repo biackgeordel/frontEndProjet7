@@ -33,6 +33,7 @@ export default{
     name:"Message",
     props:['items','user'],
     computed:{
+       //on affiche tous les noms des users stockés dans la table message
        getUserMessage(){
           let nom="" ;  
            this.user.forEach(element => {

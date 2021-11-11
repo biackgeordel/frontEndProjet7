@@ -46,7 +46,6 @@
 
 
 <script>
-import { eventBus } from '../../main';
 export default{
    
     name:"CreateForm",
@@ -136,8 +135,6 @@ export default{
                   this.$router.push({
                       path:`Accueil/${this.user.username}`   
                          });
-                  //on met à jour l'user sur eventBus
-                  eventBus.changerUser({...this.user});
                   localStorage.setItem('user',JSON.stringify(this.user));
                 }
                 
