@@ -46,29 +46,12 @@
 export default{
     name:"TheNewMessage",
     props:['user'],
-   /* directives:{
-        drop:(el)=>{
-            el.addEventListener('dragover',(event)=>{
-                event.preventDefault();
-                event.stopPropagation();
-                console.log(event);
-            });
-            el.addEventListener('drop',(event)=>{
-                event.preventDefault();
-                console.log(event.dataTransfer.files);
-
-            })
-            
-            
-            }
-        
-    },*/
     data(){
         return{
             message:{
                 title:"",
                 description:"",
-                idUser:"",
+               idUser:""
             },
             valid:true,
             validImage:false,
@@ -79,8 +62,8 @@ export default{
     },
     mounted(){
         //on recupere user stocké dans le localStorage
-        this.message.idUser=JSON.parse(localStorage.getItem('user')).idUser;
-        console.log('mounted newmessage user:',this.message.idUser)
+       this.message.idUser=JSON.parse(localStorage.getItem('user')).idUser;
+       console.log('mounted newmessage user:',this.message.idUser)
 
     },
     methods:{
@@ -143,7 +126,7 @@ export default{
              )
              .then(response=>{
                  console.log(response);
-                   this.$router.push({
+                  this.$router.push({
                 path:`/Accueil/${this.user}`//user stocké en parametre
             })
       

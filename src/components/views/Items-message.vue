@@ -1,5 +1,5 @@
 <template>
- <message :user="user" :items="items"></message> 
+ <message :items="items" ></message> 
     
 </template>
 <script>
@@ -7,9 +7,9 @@ import Message from '../user/Message.vue'
 export default{
   components: { Message },
 name:'Item-message',
-props:['items','user']
-
+props:['items']
 }
+
 
 </script>
 <style lang="scss" scoped>

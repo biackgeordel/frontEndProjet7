@@ -1,28 +1,33 @@
 <template>
-   <section class="container-fluid">
-     <nav class="navbar navbar-light bg-light">
+   <section>
+     <nav  class="navbar  navbar-expand-lg navbar-light bg-light">
          <div class="container-fluid">
-                   <router-link class="navbar-brand" :to="{name:'home'}">Accueil</router-link>
-         
-           <router-link class="navbar-brand" :to="{name:'new'}">Publier une image</router-link>
+              <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                     <li class="nav-item">
+                        <router-link class="nav-link" :to="{name:'home'}">Accueil</router-link>
+                     </li>
+                     <li class="nav-item">
+                     <router-link class="nav-link" :to="{name:'new'}">Partager  une image <i class="bi bi-camera router-link-exact-active"></i></router-link>
+                     </li>
+
+                 </ul>
+            </div>
          </div>
      </nav>
     
-         <router-view></router-view>    
+                                     <router-view></router-view>    
     </section> 
 </template>
 
 <script>
 export default {
   name: 'Accueil',   
-  computed:{
-        routeCourant(){
-          console.log( 'route courant', this.$route.name);
-          return ' '
-        }
-      },
-   
-  }
+}
   
 </script>
 
@@ -30,5 +35,7 @@ export default {
 
 .router-link-exact-active{
   font-weight: bold;
+ 
+
 }
 </style>

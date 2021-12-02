@@ -5,7 +5,8 @@ import TheForm from './components/user/TheForm.vue';
 import Accueil from './components/views/Accueil.vue';
 import TheNewMessage  from './components/user/TheNewMessage.vue';
 import UserHome from './components/views/UserHome.vue';
-import Profil from './components/user/Profil-user.vue'
+import Profil from './components/user/Profil-user.vue';
+import OneMessage from './components/user/OneMessage.vue';
 //on ajoute vueRouter comme plugin a Vue
 Vue.use(vueRouer);
 //on export une instance vueRouter
@@ -15,6 +16,7 @@ export default new vueRouer({
             {
                 path:'/',
              redirect:'/login'
+          
                   
             
             },
@@ -35,6 +37,16 @@ export default new vueRouer({
         {
             path:'/Accueil/:user',
             component:Accueil,
+            beforeEnter:(to,from,next)=>{
+                if(localStorage.getItem('auth')){
+            
+                    next();
+                }else{
+                  next('/')
+                }
+                
+                
+            },
             children:[
                 {
                     path:'',
@@ -47,11 +59,24 @@ export default new vueRouer({
                 name:'new',
                  component:TheNewMessage,
                  props:true
-                  },
-                
-
-                
-                
+                  }, 
+                  {
+                    path:'message/:id',
+                    name:"one",
+                    params:{
+                        id:"odilon"
+                    },
+                    component:OneMessage,
+                    props:true
+                    
+                },
+                {
+                    path:'profil/:user',
+                    name:'profil',
+                    component:Profil,
+                    props:true
+                  
+                },    
                 ]
         },
         {
@@ -62,23 +87,26 @@ export default new vueRouer({
         {
             path:'/login',
             name:'connexion',
-            component:TheForm
-
+            component:TheForm,
+            beforeEnter:(to,from,next)=>{
+                if(localStorage.getItem('auth')){
+                    next(`/Accueil/${JSON.parse(localStorage.getItem('user')).username}`);
+                }else{
+                  next()
+                }
+                
+                
+            },
+      
         },
         {
-            path:'/profil/:user',
-            name:'profil',
-            component:Profil,
-          
+            path:'*',
+            redirect:'/'
         }
+    
    
-
-
-
-
-
-
-
+    
+   
     ]
 
 })

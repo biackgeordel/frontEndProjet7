@@ -2,16 +2,16 @@
     
  <div>
         <div class="commande">
-            
-             <h6 @click="showCommentaire=!showCommentaire"
-              title="cliquez pour voir les commentaires">
-                    commentaire:{{nombreDeCommentaire}}</h6>
-  
-        <button type="button" class="btn btn-outline-info">
-                 <span><i class="bi bi-hand-thumbs-up-fill"> 3</i></span>
+                        
+                <h6 style="color:#2c2c54 ;font-weight:bold" @click.prevent="showCommentaire=!showCommentaire"
+                title="cliquez pour voir les commentaires">
+                     commentaire:{{tabcommentaire.length}}
+                </h6>
+        <button :style="{color:colorLike}" :disabled="valid" @click.prevent="addLikes" type="button" class="btn btn-outline-info">
+                 <span><i styele="font-size:15px " class="bi bi-hand-thumbs-up-fill">{{tabLikes.length}}</i></span>
         </button>
-        <button  type="button" class="btn btn-outline-info">
-                <i class="bi bi-hand-thumbs-down-fill"> 2</i>
+        <button @click.prevent="addDisLikes" :style="{color:colorDisLike}" id="dislikes" type="button"  :disabled="validation" class="btn btn-outline-info">
+                <i class="bi bi-hand-thumbs-down-fill">{{tabDisLikes.length}}</i>
         </button >
         <button  @click="msgbutton=!msgbutton" type="button" 
          title="Ecrire un commentaire"
@@ -19,142 +19,290 @@
              <span><i class="bi bi-chat"></i></span>
         </button>
         </div>
-            
               <div v-show="msgbutton" class="form-floating">
                  <textarea v-model="msg" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
                     <label for="floatingTextarea">commentaires</label>
                      <button   @click="publier" type="button" class="btn btn-outline-info">Publier</button>
                 </div>
-                <div>
-                   <div v-show="showCommentaire">
-                     <div   v-for="(val,index) in commentaires" :key="index">
-                         <div class="box-commentaire" v-if="idMessage===val.idMessage">
+                    <div v-show="showCommentaire">
+                      
+                            <div v-for="val in tabcommentaire" :key="val.id">
+                                <div class="box-commentaire">
                                   <div class="id-user" >
                                  <div class="photo-user">
-                                    <img src="../../assets/logo.png" alt="photo user"/>
+                                    <img :src="val.User.urlImage" alt="photo user"/>
+                                    <span>{{val.User.username}}</span>
                                     </div>
                                  </div>
                           
-                              <div  v-zoneText  class="bg-success p-2 text-dark bg-opacity-10"> 
-                                 <p  >{{val.description}}</p> 
-                                <span class="info-date info">Commenté le :{{val.date}}</span>
+                              <div  v-zoneText  class=" zone bg-success p-2 text-dark bg-opacity-10"> 
+                                 <p>{{val.description}}</p> 
+                                 <span class="info-date info">Commenté le :{{val.createdAt}}</span>
                               </div>
+                                
                            
                          </div> 
-                    </div>
-                   </div>     
-                   
-                 
+                           
+                          </div>
 
-                </div>
-                
-            
-       
-    </div>
+                    </div>
+                         
+ </div>
+                       
     
 </template>
 <script>
 
 export default{
     name:"Commentaire",
+ props:['coments','MessageId','like','disLike'],
     directives:{
         zoneText:(el)=>{
             //on defini le style par defaut de la zone de texte
-        
-                el.style.width="30vw";
-                el.style.overflow="break-word";
-                el.style.borderRadius="1.5vw";
+              el.style.overflow="break-word";
+               el.style.borderRadius="1.5vw";
+              
+               if(el.innerText.length<=100){
+                   el.style.height="5vw";
+                   el.style.lineHeight="1";
+                
+
+               }else{
                 el.style.lineHeight="1.5";
                 el.style.paddingTop="2%";
-                el.style.paddingLeft="2%";        
+                el.style.paddingLeft="2%";
+               }
+                
         }
     },
-    mounted(){
-        this.user=JSON.parse(localStorage.getItem('user')).idUser;
-        console.log("mounted user:",this.user);
-    },
+
     data(){
         return {
             msgbutton:false,//boolean pour faire appparaitre la zone de saisie
            tabcommentaire:[],//array contenant tous les commentaires
-           msg:"",//contenu du textarea
-           user:" ",// identifiant de  l'user
-            showCommentaire:true
-        }
-       
-    },
-     props:['idMessage'],//props contenant l'id des messages
-    methods:{
-        publier(){
-                //console.log(this.idMessage);
-            let date=new Date();
-            //console.log(date.toLocaleDateString());
-            //objet contenant le message de l'user
-            let msg={
-                 idMessage:this.idMessage,//id du message
-                description:this.msg,
-                date:date.toLocaleDateString(),
-                   
-                idUser:this.user, 
-            }
-                console.log('publier',msg);
-                 /*  this.$http.post('/addCommentaire',msg,{
-                headers:{
-                    'Content-Type':'application/json'
-                }
-            })
-            .then(response=>{
-                const com=response.data;
-                this.tabcommentaire=[...this.tabcommentaire,com];
-            }).catch(error=>{
-                console.log(error);
-            });*/
-            console.log(this.tabcommentaire);
+           msg:"",//variable contenant le commentaire  du textarea
+            showCommentaire:true,
+            likes:0,//determine l'etat du bouton likes valeur possible 0 et 1
+            dislikes:0,//determine l'etat du bouton dislikes valeur possible 0 et -1
+            tabLikes:[],//tableau contenant les users qui aiment le message
+            tabDisLikes:[],// tableau contenant les users qui n'aiment pas le message 
+            validation:false, //variable qui determine si le bouton likes est active
+            valid:false,//variable qui determine si le bouton dislikes est active
+            colorLike:'#485460',
+            colorDisLike:'#485460'
+    
+        
+        
+            
           
-            this.$store.dispatch('fetchCommentaire',msg);
-            console.log('message store :',this.$store.state.commentaire);
-           /*eventBus.ajouterCommentaire({...msg});
-           console.log("tableau comentaire");
-           console.log(eventBus.commentaire);*/
-           this.msgbutton=false;
-             this.msg="";
-        },
-        
-        
+        }  
     },
     created(){
-        this.$store.dispatch('fetchAllCommentaire');
-        
-       /* this.tabcommentaire=eventBus.commentaire;
-        eventBus.$on('update:commentaire',(msg)=>{
-            console.log('table commentaire ',eventBus.commentaire);
-                this.tabcommentaire=msg;
-
-        });*/
+        this.tabcommentaire=this.coments
+        this.tabLikes=this.like;
+        this.tabDisLikes=this.disLike
     },
-    computed:{
-        //affiche le nbre de commentaire d'un message
-        nombreDeCommentaire(){
-            const tab=this.$store.state.commentaire;
-                    let count=0;
-        tab.forEach(element => {
-                if(element.idMessage===this.idMessage){
-                    count++;
-                    if(count>3){
-                        this.showCommentaire=false;
-                    }
-                }
-                
-            });
-            return count;
+    mounted(){
+              let userId=JSON.parse(localStorage.getItem('user')).idUser;
+             this.tabLikes.forEach(element=>{
+            if(element.UserId===userId && element.MessageId===this.MessageId){
+                console.log('user existe');
+                console.log(element.UserId);
+                console.log(JSON.parse(localStorage.getItem('user')).idUser);
+               this.likes=1;
+             }
+        })
+           this.tabDisLikes.forEach(element=>{
+            if(element.UserId===userId && element.MessageId===this.MessageId){
+                console.log('user existe dans tabDisLikes');
+                console.log(element.UserId);
+                console.log(JSON.parse(localStorage.getItem('user')).idUser);
+               this.dislikes=-1;
+             }
+        });
+       
+
+    },
+    watch:{
+        tabcommentaire(){
+            console.log('show:',this.tabcommentaire);
+        this.showCommentaire=(this.tabcommentaire.length>=4) ? false :true;
         },
-        commentaires(){
-            return this.$store.state.commentaire;
+        likes(){
+            if(this.likes===1){
+                  this.colorLike="#05c46b";
+                this.validation=true;
+            }else if(this.likes===0){
+                this.validation=false
+                this.colorLike="#485460";
+            }
+            console.log('valid:',this.validation,'like:',this.likes);
+            return this.validation;
+
+        },
+        dislikes(){
+            if(this.dislikes===-1){
+                  this.colorDisLike="#f53b57";
+                this.valid=true;
+            }else if(this.dislikes===0){
+                this.valid=false;
+                this.colorDisLike="#485460";
+            }
+            console.log('valid:',this.valid,'like:',this.dislikes);
+            return this.valid;
+
+        },
+            tabDisLikes(){
+       
+            console.log('new tabDislikes:',this.tabDisLikes);
+        },
+
+        tabLikes(){
+       
+            console.log('new tablikes:',this.tabLikes);
         }
+    },
+    methods:{
+       publier(){
+            let msg={
+                 MessageId:this.MessageId,//id du message
+                description:this.msg,           
+                UserId:JSON.parse(localStorage.getItem('user')).idUser, 
+            }
+          console.log(msg);
+         this.$http.post('/addCommentaire',msg,{
+              Headers:{
+                  'Centent-Type':'application/json'
+              }
+          }).then(response=>{
+              if(response.status===200){
+              console.log(response.data);
+              console.log('id com:',response.data.comments.id)
+            this.$http.get(`/oneCommentaire/${response.data.comments.id}`).
+              then(response=>{
+                   this.tabcommentaire=[...this.tabcommentaire,response.data];
+                   this.validation();
+                    
+              }).catch(error=>{
+                  console.log(error);
+              });
+              
+              }
+          }).catch(error=>{
+              console.log(error);
+          });
+         
+       
+           this.msgbutton=false;
+             this.msg="";
+               
+        },
+        addLikes(){
+
+            let idLike=''
+            let userId=JSON.parse(localStorage.getItem('user')).idUser;
+             this.tabLikes.forEach(element => {
+                if(element.UserId===userId && element.MessageId===this.MessageId){
+                    console.log('id like',element.id);
+                    idLike=element.id;
+                    this.likes=1;
+                }  
+                 });
+          
+
+             if(this.likes===0){ this.$http.post('/addLike',
+                    {
+                    UserId:userId,
+                    MessageId:this.MessageId },
+                    {
+                        Headers:{"Content-Type":"application/json"}
+                    }
+                    ).then(response=>{
+                        if(response.status===200){
+                            console.log('like:',response.data.like);
+                        this.tabLikes=[...this.tabLikes,response.data.like];
+                        this.likes=1;
+                        }
+                    }).catch(error=>{
+                        console.log(error)
+                    })
+                }else if(this.likes===1){
+                    console.log('delete:',idLike);
+                    console.log(userId);
+                    this.$http.delete(`/delete/${idLike}/${userId}`).then(response=>{
+                        console.log(response);
+                        if(response.data===1){
+                        for(let i=0;i<this.tabLikes.length;i++){
+                         if(this.tabLikes[i].id===idLike && this.tabLikes[i].UserId===userId){
+                            console.log( 'element a supprimer:',this.tabLikes[i]);
+                            this.tabLikes.splice(i,1);
+                            console.log('new tab:',this.tabLikes);
+                            this.likes=0;
+                        }
+
+
+                        }
+               
+                        }
+                    }).catch(error=>{
+                        console.log(error);
+                    });
+                }
+        
+        },
+         addDisLikes(){
+          let idDisLike=''
+            let userId=JSON.parse(localStorage.getItem('user')).idUser;
+             this.tabDisLikes.forEach(element => {
+                if(element.UserId===userId && element.MessageId===this.MessageId){
+                    console.log('id dislike',element.id);
+                    idDisLike=element.id;
+                    this.dislikes=-1;
+                }  
+                 });
+          
+
+             if(this.dislikes===0){
+             this.$http.post('/addDisLike',
+                    {
+                    UserId:userId,
+                    MessageId:this.MessageId },
+                    {
+                        Headers:{"Content-Type":"application/json"}
+                    }
+             ).then(response=>{ if(response.status===200){
+                 console.log('DisLike:',response.data.disLike);
+                this.tabDisLikes=[...this.tabDisLikes,response.data.disLike];
+                this.dislikes=-1;
+                        }
+                }).catch(error=>{
+                  console.log(error)
+                    })
+                }else if(this.dislikes===-1){
+                    console.log('delete:',idDisLike);
+                    console.log(userId);
+                 this.$http.delete(`/deleteDisLike/${idDisLike}/${userId}`).then(response=>{
+                    console.log(response);
+                if(response.data===1){
+                  for(let i=0;i<this.tabDisLikes.length;i++){
+                  if(this.tabDisLikes[i].id===idDisLike && this.tabDisLikes[i].UserId===userId){
+                    console.log( 'element a supprimer:',this.tabDisLikes[i]);
+                    this.tabDisLikes.splice(i,1);
+                    console.log('new tab:',this.tabDisLikes);
+                    this.dislikes=0;
+                     }
+                } }
+                }).catch(error=>{
+                    console.log(error);
+                    });
+                    }
+            }
     }
-
+         
+      
+    
 }
-
+    
 
 </script>
 <style lang="scss" scoped>
@@ -164,6 +312,8 @@ button{
 }
 textarea{
     width:100% !important;
+    position:relative;
+    right:10%;
     margin:5px;
 }
 h6{
@@ -175,13 +325,16 @@ h6{
    margin-bottom:2%;
    display:flex;  
    margin-top:2%;
-
-   justify-content: center;
     //height:30vh;
+.zone{
+    position:relative;
+    right:10%;
+    width:50vw;
+}
 }
 .form-floating{
    position:relative;
-   width:80%;
+   width:100%;
    left:10%;
 }
 .commande{
@@ -190,24 +343,31 @@ h6{
     margin: auto;
 }
 .id-user{
- height:5vw;
+ height:8vw;
+ width:30%;
+ padding-left:3%;
+font-weight: bold;
  .photo-user{
-    width:5vw;
-    height:5vw;
+    width:3vw;
+    height:3vw;
+    margin-top:5%;
+    text-align: center;
      img{
    display: inline-block;
    object-fit: cover;
     border-radius:50%;
-    background-color: aqua;
     width:100%;
     height:100%;
     }
  }
 }
 .info-date{
-    font-size:0.9vw;
+    font-size:1vw;
     font-weight:bold;
-    color:#2e86de
+    color:#2c3e50
+}
+.test:disabled{
+    display: none;
 }
 
 

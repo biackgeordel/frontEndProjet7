@@ -1,17 +1,27 @@
 <template>
-   <commentaire :idMessage='idMessage'></commentaire> 
+    <div>
+        <div>
+            <commentaire :MessageId="MessageId"  :disLike="disLike" :like="like" :coments="coments"></commentaire>
+            
+        </div>
+        
+    </div>
+   
     
 </template>
 <script>
 import commentaire from "../user/commentaire.vue"
 export default{
 name:'Item-commentaire',
-props:['idMessage'],
+props:['coments','MessageId','like','disLike'],
 components:{
     commentaire
-}
+},
+
 
 }
+
+
 
 </script>
 <style lang="scss" scoped>

@@ -83,16 +83,22 @@ export default{
                       this.validEmail=true;
                 }
            },
-              connexion(user){
+            connexion(user){
+  
              this.$http.post('/login',user).
              then(response=>{
                  console.log(response);
                  if(response.status===200){
+                     console.log(response.data);
             //on recupere les données de l'user stockées dans la BD
                   this.user={
                  username:response.data.username,
-                 idUser:response.data.idUser
+                 idUser:response.data.id
                   };
+                  const token=response.data.token;
+                  //on stoke les informations de l'user dans le localStorage
+                localStorage.setItem('user',JSON.stringify(this.user));
+                localStorage.setItem('auth',token)
                   console.log('mon user :',this.user);
                  console.log('mon user :',this.user.username)
                  //on fait la redirection sur la route accueil on le passe un paramètre 
@@ -100,16 +106,18 @@ export default{
                   this.$router.push({
                       path:`Accueil/${this.user.username}`   
                          });
-                  localStorage.setItem('user',JSON.stringify(this.user));
+               
                 }
                 
               }).catch(error=>{
                console.log(error);
-                this.msg=`${error.response.statusText} :${error.response.data.msg}`;
+                this.msg=`${error.response.statusText} :${error.response.data.message}`;
                  this.validErrorServer=true;
               })   
 
     },
+        
+
    
     },
     computed:{
@@ -134,7 +142,7 @@ export default{
       height:100vh;
     display: flex;
     justify-content:space-between;
-   background-color:#2c3e50;
+  
    @media (max-width:950px){
        flex-direction: column;
        align-items: center;
@@ -153,7 +161,8 @@ export default{
             text-align:center;
             padding-top:10%;
             padding-left:-10%;
-            color:#ffffff;//#95a5a6;
+            color:#2f3542;
+             font-weight:bold;
         }
     }
     .form{
@@ -165,7 +174,7 @@ export default{
          height:100%;
         .btn{
             width:30%;
-            margin-left:30%;
+            margin-left:5%;
      
             @media (max-width:950px){
              margin-right:100% !important;
@@ -176,8 +185,11 @@ export default{
     }
 }
 label{
-    color:#ecf0f1;
+    color:#2f3542;;
+    font-weight:bold;
 }
-
+.test{
+    color:#c0392b;
+}
 
 </style>
