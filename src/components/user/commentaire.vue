@@ -7,16 +7,18 @@
                 title="cliquez pour voir les commentaires">
                      commentaire:{{tabcommentaire.length}}
                 </h6>
-        <button :style="{color:colorLike}" :disabled="valid" @click.prevent="addLikes" type="button" class="btn btn-outline-info">
-                 <span><i styele="font-size:15px " class="bi bi-hand-thumbs-up-fill">{{tabLikes.length}}</i></span>
+        <button :style="{color:colorLike}" :disabled="valid" @click.prevent="addLikes" 
+        type="button" class="btn">
+             <span><b-icon icon="hand-thumbs-up"></b-icon>{{tabLikes.length}}</span>
         </button>
-        <button @click.prevent="addDisLikes" :style="{color:colorDisLike}" id="dislikes" type="button"  :disabled="validation" class="btn btn-outline-info">
-                <i class="bi bi-hand-thumbs-down-fill">{{tabDisLikes.length}}</i>
+        <button @click.prevent="addDisLikes" :style="{color:colorDisLike}" id="dislikes" type="button"
+          :disabled="validation" class="btn">
+            <b-icon icon="hand-thumbs-down"></b-icon> {{tabDisLikes.length}}
         </button >
         <button  @click="msgbutton=!msgbutton" type="button" 
          title="Ecrire un commentaire"
-         class="btn btn-outline-info">
-             <span><i class="bi bi-chat"></i></span>
+         class="btn">
+         <span><b-icon icon="chat-dots-fill"></b-icon></span>
         </button>
         </div>
               <div v-show="msgbutton" class="form-floating">
@@ -63,10 +65,7 @@ export default{
                el.style.borderRadius="1.5vw";
               
                if(el.innerText.length<=100){
-                   el.style.height="5vw";
-                   el.style.lineHeight="1";
-                
-
+                   el.style.lineHeight="1"
                }else{
                 el.style.lineHeight="1.5";
                 el.style.paddingTop="2%";
@@ -278,7 +277,8 @@ export default{
                 }).catch(error=>{
                   console.log(error)
                     })
-                }else if(this.dislikes===-1){
+                }else if(this.dislikes===-1)
+                {
                     console.log('delete:',idDisLike);
                     console.log(userId);
                  this.$http.delete(`/deleteDisLike/${idDisLike}/${userId}`).then(response=>{
@@ -309,9 +309,10 @@ export default{
 button{
    margin:5px !important;
 
+
 }
 textarea{
-    width:100% !important;
+    width:90% !important;
     position:relative;
     right:10%;
     margin:5px;

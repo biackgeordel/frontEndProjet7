@@ -2,10 +2,10 @@ import Vue from 'vue'
 import router from './router'
 import App from './App.vue'
 import store from './store';
+import { BootstrapVue, IconsPlugin,BootstrapVueIcons } from 'bootstrap-vue';
 import axios from 'axios';
 Vue.prototype.$http=axios;// on crée un prototype $http pour le rendre accessible sous $http
-
-
+console.log(BootstrapVue);
 axios.defaults.baseURL="http://localhost:3000/api/auth"
 axios.interceptors.request.use((req)=>{
   console.log(req)
@@ -20,6 +20,16 @@ axios.interceptors.response.use((res)=>{
  
   return res;
 });
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+
+// Make BootstrapVue available throughout your project
+Vue.use(BootstrapVue);
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin);
+Vue.use(BootstrapVueIcons);
 
 
 Vue.config.productionTip = false;
@@ -27,5 +37,8 @@ Vue.config.productionTip = false;
 new Vue({
   store,
   router,
+  BootstrapVue,
+  IconsPlugin,
+  BootstrapVueIcons,
   render: h => h(App),
 }).$mount('#app')

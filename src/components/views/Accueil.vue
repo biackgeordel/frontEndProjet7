@@ -12,7 +12,7 @@
                         <router-link class="nav-link" :to="{name:'home'}">Accueil</router-link>
                      </li>
                      <li class="nav-item">
-                     <router-link class="nav-link" :to="{name:'new'}">Partager  une image <i class="bi bi-camera router-link-exact-active"></i></router-link>
+                     <router-link class="nav-link" :to="{name:'new'}">Partager  une image <b-icon icon="camera" font-scale="1.5"></b-icon></router-link>
                      </li>
 
                  </ul>

@@ -90,7 +90,8 @@ export default new vueRouer({
             component:TheForm,
             beforeEnter:(to,from,next)=>{
                 if(localStorage.getItem('auth')){
-                    next(`/Accueil/${JSON.parse(localStorage.getItem('user')).username}`);
+                    localStorage.removeItem('auth');
+                    next();
                 }else{
                   next()
                 }

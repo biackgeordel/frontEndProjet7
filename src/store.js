@@ -9,23 +9,34 @@ Vue.use(Vuex);
 
 const store= new  Vuex.Store({
     state:{
-        datas:[],//array contenant tous les message
+        datas:{
+            email:"",
+            ville:"",
+            pays:"",
+            bio:"",
+            urlImage:""
+        }
        
     },
     mutations:{
-        getManyDatas(state,datas){
-            state.datas=datas;
+        getUser(state,user){
+            state.datas=user;
+            console.log('user:',state.datas);
         }
+      
     },
     actions:{
-        fetchDatas(context){
-            axios.get('allmessage').then(response=>{
+        fetchGetOne(context){
+            const user=JSON.parse(localStorage.getItem('user')).idUser;
+            axios.get(`/getOne/${user}`).then(response=>{
                 if(response.status===200){
-                    const datas=response.data;
-                context.commit('getManyDatas',Object.keys(datas).map(keys=>datas[keys]));
+                    console.log(response.data);
+                    context.commit('getUser',response.data);
+                
                 }
             })
         }
+     
     }
 
  
