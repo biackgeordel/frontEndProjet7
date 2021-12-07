@@ -95,7 +95,7 @@ export default{
         this.$store.dispatch('fetchGetOne');
     },
     mounted(){
-      console.log('datas',this.$store.state.datas.ville);
+      
       
     },
     computed:{
@@ -116,10 +116,21 @@ export default{
       handleSubmit() {
         console.log(this.userInfo);
         console.log(this.file);
+        let user=JSON.parse(localStorage.getItem('user')).idUser;
         let formData=new FormData();
         formData.append('user',JSON.stringify(this.userInfo));
         formData.append('image',this.file);
           console.log(formData);
+          this.$http.put(`/updateUser/${user}`,formData,{
+            
+          headers:{'Content-Type': 'multipart/form-data'}
+          }
+           ).then(response=>{
+             console.log(response);
+           }).catch(error=>{
+             console.log(error);
+           })
+           
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')
         })
@@ -172,12 +183,18 @@ export default{
         margin:auto;
         width:50%;
         height:50vw;
+          @media(max-width:950px){
+              width:100%;
+              height:100%;
+              margin:0%;
+            }
         border:1px solid #ecf0f1;
         border-radius:2%;
         position: relative;
+        margin-bottom:5%;
         top:2vw;
         h2,h3{
-            color:#2c3e50;
+            color:#12181d;
         }
         .box-info{
             padding-left:3%;
@@ -189,6 +206,7 @@ export default{
         .btn-command{
             padding:5% 6%;
             width:50%;
+          
             button{
                 margin :2px ;
             }

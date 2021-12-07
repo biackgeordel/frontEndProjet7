@@ -7,19 +7,22 @@
                 title="cliquez pour voir les commentaires">
                      commentaire:{{tabcommentaire.length}}
                 </h6>
-        <button :style="{color:colorLike}" :disabled="valid" @click.prevent="addLikes" 
-        type="button" class="btn">
-             <span><b-icon icon="hand-thumbs-up"></b-icon>{{tabLikes.length}}</span>
-        </button>
-        <button @click.prevent="addDisLikes" :style="{color:colorDisLike}" id="dislikes" type="button"
-          :disabled="validation" class="btn">
-            <b-icon icon="hand-thumbs-down"></b-icon> {{tabDisLikes.length}}
-        </button >
-        <button  @click="msgbutton=!msgbutton" type="button" 
-         title="Ecrire un commentaire"
-         class="btn">
-         <span><b-icon icon="chat-dots-fill"></b-icon></span>
-        </button>
+        <b-button :variant="colorLike"  :disabled="valid" id="likes"
+        @click.prevent="addLikes" >
+              <b-icon icon="hand-thumbs-up"></b-icon>{{tabLikes.length}}
+        </b-button>
+
+        <b-button :variant="colorDisLike"  @click.prevent="addDisLikes"
+         :disabled="validation" id="dislikes">
+
+            <b-icon icon="hand-thumbs-down"></b-icon> {{tabDisLikes.length}} 
+        </b-button>
+       
+           
+        <b-button variant="primary" @click="msgbutton=!msgbutton"
+         title="Ecrire un commentaire">
+             <b-icon icon="chat-dots-fill"></b-icon>
+        </b-button>
         </div>
               <div v-show="msgbutton" class="form-floating">
                  <textarea v-model="msg" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
@@ -87,8 +90,8 @@ export default{
             tabDisLikes:[],// tableau contenant les users qui n'aiment pas le message 
             validation:false, //variable qui determine si le bouton likes est active
             valid:false,//variable qui determine si le bouton dislikes est active
-            colorLike:'#485460',
-            colorDisLike:'#485460'
+            colorLike:'primary',
+            colorDisLike:'primary'
     
         
         
@@ -129,11 +132,11 @@ export default{
         },
         likes(){
             if(this.likes===1){
-                  this.colorLike="#05c46b";
+                 this.colorLike="success";
                 this.validation=true;
             }else if(this.likes===0){
                 this.validation=false
-                this.colorLike="#485460";
+               this.colorLike="primary";
             }
             console.log('valid:',this.validation,'like:',this.likes);
             return this.validation;
@@ -141,11 +144,11 @@ export default{
         },
         dislikes(){
             if(this.dislikes===-1){
-                  this.colorDisLike="#f53b57";
+                 this.colorDisLike="danger";
                 this.valid=true;
             }else if(this.dislikes===0){
                 this.valid=false;
-                this.colorDisLike="#485460";
+               this.colorDisLike="primary";
             }
             console.log('valid:',this.valid,'like:',this.dislikes);
             return this.valid;
