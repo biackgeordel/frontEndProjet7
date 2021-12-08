@@ -100,7 +100,7 @@ export default new vueRouer({
             },
       
         },
-        {
+       {
             path:'*',
             redirect:'/'
         }
