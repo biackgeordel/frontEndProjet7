@@ -1,8 +1,8 @@
 <template>
         <div>
-          <div class="container">
+          <div >
             <div v-for="items in datas" :key="items.id">
-                       <div class="message">
+                       <div>
                       <items-message :items="items"></items-message>
                     </div>
                  
@@ -21,22 +21,13 @@ components:{
     ItemsMessage,
    
 },
-props:['datas']
+props:['datas'],
+created(){
+  this.$store.dispatch('fetchGetCommentaire');
+}
 }
 
 </script>
 <style lang="scss" scoped>
-  .container{
-    width:100%;
-    margin:auto;
-    //border:1px solid red;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    align-content: space-between;
- 
-    
-  }
-  
 
 </style>

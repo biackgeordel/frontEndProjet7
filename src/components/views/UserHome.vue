@@ -1,23 +1,22 @@
 <template>
     <div>
-            <h1>Bonjour {{user}}</h1>
          <list-message :datas="datas"></list-message>
-         
-
+        
     </div>
+
 
 
 </template>
 <script>
 
-//import { mapState } from 'vuex';
 import ListMessage from '../views/List-message.vue';
 export default{
 
     name:'UserHome',
     props:['user'],
     components:{
-        ListMessage
+        ListMessage,
+        
     },
     data(){
         return{
@@ -39,6 +38,7 @@ export default{
 
 </script>
 <style lang="scss" scoped>
+
 
 
 </style>

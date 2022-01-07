@@ -3,16 +3,19 @@
  <div>
         <div class="commande">
                         
-                <h6 style="color:#2c2c54 ;font-weight:bold" @click.prevent="showCommentaire=!showCommentaire"
-                title="cliquez pour voir les commentaires">
-                     commentaire:{{tabcommentaire.length}}
-                </h6>
+            <div class="nombre-commentaire" style="color:#2c2c54 ;font-weight:bold" @click.prevent="showCommentaire=!showCommentaire">
+                <p v-b-tooltip.hover title=" Voir les commentaires">
+                    commentaire:{{tabcommentaire.length}}
+                </p>
+            </div>
         <b-button :variant="colorLike"  :disabled="valid" id="likes"
+          v-b-tooltip.hover title="J'aime"
         @click.prevent="addLikes" >
-              <b-icon icon="hand-thumbs-up"></b-icon>{{tabLikes.length}}
+              <b-icon icon="hand-thumbs-up"></b-icon> {{tabLikes.length}}
         </b-button>
 
         <b-button :variant="colorDisLike"  @click.prevent="addDisLikes"
+         v-b-tooltip.hover title="Je n'aime pas"
          :disabled="validation" id="dislikes">
 
             <b-icon icon="hand-thumbs-down"></b-icon> {{tabDisLikes.length}} 
@@ -20,37 +23,35 @@
        
            
         <b-button variant="primary" @click="msgbutton=!msgbutton"
-         title="Ecrire un commentaire">
+        v-b-tooltip.hover title="Ecrire un commentaire">
              <b-icon icon="chat-dots-fill"></b-icon>
         </b-button>
         </div>
               <div v-show="msgbutton" class="form-floating">
-                 <textarea v-model="msg" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                    <label for="floatingTextarea">commentaires</label>
+                 <textarea v-model="msg" class="form-control" placeholder="Leave a comment here"></textarea>
                      <button   @click="publier" type="button" class="btn btn-outline-info">Publier</button>
                 </div>
                     <div v-show="showCommentaire">
-                      
-                            <div v-for="val in tabcommentaire" :key="val.id">
-                                <div class="box-commentaire">
-                                  <div class="id-user" >
-                                 <div class="photo-user">
-                                    <img :src="val.User.urlImage" alt="photo user"/>
-                                    <span>{{val.User.username}}</span>
-                                    </div>
-                                 </div>
+                       <div v-for="val in tabcommentaire" :key="val.id">
+                           <div class="box-commentaire">
+                               <div class="id-user" >
+                                   <div class="photo-user">
+                                      <img :src="val.User.urlImage" alt="photo user"/>
+                                   </div>
+                               </div>
                           
-                              <div  v-zoneText  class=" zone bg-success p-2 text-dark bg-opacity-10"> 
-                                 <p>{{val.description}}</p> 
-                                 <span class="info-date info">Commenté le :{{val.createdAt}}</span>
+                              <div class="zone-commentaire">
+                                  <span> <strong>{{val.User.username}}</strong></span><br/>
+                                 <span class="info-date">commenté le :{{val.createdAt}}</span> 
+                                 <p v-zoneText  class="bg-success text-dark bg-opacity-10">
+                                     {{val.description}}
+                                 </p> 
+                              
+                               
                               </div>
-                                
-                           
                          </div> 
-                           
-                          </div>
-
-                    </div>
+                     </div>
+                  </div>
                          
  </div>
                        
@@ -65,15 +66,37 @@ export default{
         zoneText:(el)=>{
             //on defini le style par defaut de la zone de texte
               el.style.overflow="break-word";
-               el.style.borderRadius="1.5vw";
-              
-               if(el.innerText.length<=100){
-                   el.style.lineHeight="1"
-               }else{
+               el.style.borderRadius="20px";
+               el.style.fontFamily="'Heebo', sans-serif";
                 el.style.lineHeight="1.5";
-                el.style.paddingTop="2%";
-                el.style.paddingLeft="2%";
-               }
+                el.style.padding="2%";
+                if(el.innerText.length<=10){
+                    el.style.width="20%"
+                }
+                else if(el.innerText.length<=30){
+                     el.style.width="50%"
+                }
+                else if(el.innerText.length<=60){
+                    el.style.width="65%"
+                }else{
+                      el.style.width="100%"
+                   // el.style.border="1px solid red";   
+                }
+               //on defini  le media query du document à écouter
+               //let media=window.matchMedia("(max-width:500px)");
+               //on ecoute le changement du media query
+            
+               /*  media.addEventListener('change',(event)=>{
+                   if(event.matches){
+                       el.style.height="8vw";
+                   }else{
+                       el.style.height="10%"
+                   }
+               }) */
+           
+            
+               
+               
                 
         }
     },
@@ -310,52 +333,73 @@ export default{
 </script>
 <style lang="scss" scoped>
 button{
-   margin:5px !important;
+  margin:5px !important;
 
 
 }
-textarea{
-    width:90% !important;
-    position:relative;
-    right:10%;
-    margin:5px;
-}
-h6{
- cursor: pointer;
- text-decoration: 1px underline;
-}
+
+
 
 .box-commentaire{
    margin-bottom:2%;
    display:flex;  
    margin-top:2%;
-    //height:30vh;
-.zone{
-    position:relative;
-    right:10%;
-    width:50vw;
-}
 }
 .form-floating{
    position:relative;
    width:100%;
-   left:10%;
+  
+
+   textarea{
+    width:90% !important;
+    margin:auto;
+    margin-top:3%;
+    position:relative;
+}
+    button{
+        display: inline-block;
+        position:relative;
+        left:5%;
+    }
 }
 .commande{
-    width:80%;
-   // border:1px solid red;
+    width:100%;
+   border-top:2px solid #ecf0f1;
     margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button{
+        width:65px;
+        height: 50%;
+        @media(max-width:950px){
+            width:15%;
+            font-size:3vw;
+        }       
+        .b-icon.bi{
+              font-size:17px;
+              text-align: center;
+             @media(max-width:950px){
+              font-size:3vw;}
+        }   
+        }
+    }
+           .nombre-commentaire{
+           padding-top:4.5%;
+          p{
+            cursor: pointer;
+             }
+
 }
+
 .id-user{
- height:8vw;
- width:30%;
- padding-left:3%;
-font-weight: bold;
+ width:15%;
+ padding-left:5%;
+//border:1px solid blue;
  .photo-user{
-    width:3vw;
-    height:3vw;
+    width:4vw;
+    height:4vw;
     margin-top:5%;
-    text-align: center;
      img{
    display: inline-block;
    object-fit: cover;
@@ -365,13 +409,17 @@ font-weight: bold;
     }
  }
 }
-.info-date{
-    font-size:1vw;
-    font-weight:bold;
-    color:#2c3e50
+.zone-commentaire{
+    width:70%;
+
 }
-.test:disabled{
-    display: none;
+.info-date{
+    font-size:14px;
+    font-weight:bold;
+    color:#2c3e50;
+    @media(max-width:950px){
+        font-size:2vw;
+    }
 }
 
 

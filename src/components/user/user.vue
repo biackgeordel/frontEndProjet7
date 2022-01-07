@@ -1,7 +1,6 @@
 <template>
 <b-container  fluid >
     <section>
-      
         <div class="box-content">
             <div class="d-flex p-4 justify-content-between">
                 <div>
@@ -45,6 +44,7 @@
             
                
             </div>
+            {{user}}
                 <hr/> 
             <div class="box-info">
                 <h2>Informations</h2>

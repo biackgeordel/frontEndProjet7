@@ -1,12 +1,17 @@
 <template>
-      <user :datas="datas" :user="user"></user>
+      <div>
+          <user :datas="datas" :user="username"></user>
+          {{username}}
+
+      </div>
+    
   
 </template>
 <script>import { mapState } from "vuex";
   import user from './user.vue'
 export default{
     name:"profil-user",
-    props:['user'],
+    props:['username'],
     components:{
       user
     },

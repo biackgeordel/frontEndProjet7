@@ -15,10 +15,7 @@ export default new vueRouer({
     routes:[
             {
                 path:'/',
-             redirect:'/login'
-          
-                  
-            
+             redirect:'/login',   
             },
         {
             path:'/signup',
@@ -63,15 +60,12 @@ export default new vueRouer({
                   {
                     path:'message/:id',
                     name:"one",
-                    params:{
-                        id:"odilon"
-                    },
                     component:OneMessage,
                     props:true
                     
                 },
                 {
-                    path:'profil/:user',
+                    path:'profil/:username',
                     name:'profil',
                     component:Profil,
                     props:true
@@ -79,18 +73,14 @@ export default new vueRouer({
                 },    
                 ]
         },
-        {
-            path:'/test',
-            redirect:'/Accueil'
-        },
 
         {
             path:'/login',
             name:'connexion',
             component:TheForm,
             beforeEnter:(to,from,next)=>{
-                if(localStorage.getItem('auth')){
-                    localStorage.removeItem('auth');
+                if(localStorage.getItem('user')){
+                    localStorage.removeItem('user');
                     next();
                 }else{
                   next()
