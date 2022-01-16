@@ -46,7 +46,6 @@ export default {
 }
     .cont{
       background-color:#ecf0f1;
-     font-family: 'Roboto', sans-serif;
     }
     
 </style>

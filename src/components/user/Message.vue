@@ -1,32 +1,33 @@
 <template>
    <div>
-       
-        <div  class="box-message">
+      <div  class="box-message">
            <div class="box-info-user">
               <div class="box-info-user__img">
-                 <img :src="items.User.urlImage" alt="photo user"/>
+                 <img :src="val.User.urlImage" alt="photo user"/>
              </div>
              <div class="date">
                  <div>
-                    {{items.User.username.replace(`${items.User.username.charAt(0)}`,`${items.User.username.charAt(0).toUpperCase()}`)}}
+                    <strong>
+                            {{val.User.username.replace(`${val.User.username.charAt(0)}`,`${val.User.username.charAt(0).toUpperCase()}`)}}
+                    </strong>
+                   <br/>à partagé le {{ val.createdAt }}
                  </div>
-                   <div>partagé le {{ items.createdAt }}</div>
+                   
              </div>
 
               <div class="box-info-user__btn">
                  <button v-b-tooltip.hover title="supprimer l'image">X</button>
               </div>             
-           </div>
-           
+           </div>         
             <div class="box-img">
-               <img   :src="items.urlImage" alt="photo" :id="`${items.id}`"/>
+               <img   :src="val.urlImage" alt="photo" :id="`${val.id}`"/>
             </div>
             <div class="title">
-                  <h4>{{items.title}}</h4>
+                  <h4>{{val.title}}</h4>
             </div>
-            <div  v-if="items.description.length>0" class="description">{{ items.description }}</div>
+            <div  v-if="val.description.length>0" class="description">{{ val.description }}</div>
             <div>
-               <items-commentaire  :disLike="items.DisLikes" :MessageId="items.id" :like="items.Likes" :coments="items.Commentaires" >
+               <items-commentaire  :disLike="val.DisLikes" :MessageId="val.id" :like="val.Likes" :coments="val.Commentaires" >
 
                 </items-commentaire>
 
@@ -43,13 +44,24 @@ export default{
     name:"Message",
     props:['items'],
     components:{
-      itemsCommentaire  
+     itemsCommentaire  
 
     },
-    methods:{
-     
+    data(){
+       return{
+          val:this.items
+       }
+    },
+    watch:{
+       items(){
+               this.val=this.items;
+        
+       }
     }
 
+   
+
+  
 }
 
 
@@ -57,8 +69,9 @@ export default{
 <style lang="scss" scoped>
    .box-message{
       border-radius:10px;
+      box-sizing: border-box;
       width:45vw;
-      background-color:white;
+      background-color:#ffffff;
       margin:auto;
       box-shadow:-1px -1px  5px  rgb(184, 184, 185),1px 1px  5px  rgb(184, 184, 185);
       margin-top:2%;
@@ -83,21 +96,18 @@ export default{
        &__img{
           width:10%;
           height:100%;
+          padding:1%;
           img{
             display: inline-block;
             position:relative;
             top:1%;
-          
-             padding:2%;
              border-radius: 50%;
-             width:3.5vw;
-             height:3.5vw;
-             object-fit: cover;
-           
-             object-fit: cover;
+             width:3vw;
+             height:3vw;
+             object-fit:fill;
              @media(max-width:950px){
-               width:10vw;
-               height:10vw;
+               width:8vw;
+               height:8vw;
              }
           }
    
@@ -139,21 +149,18 @@ export default{
     }
     .box-img{
        width:100%;
-       height:40%;
+       height:25vw;
+           @media(max-width:950px){
+             height:100%;
+             width:100%   
+              }
        text-align: center;
-       background-color:#ecf0f1;
        margin:auto;
        img{
-           object-fit: cover;
-             width:100%;
-             height:100%;
-
-          @media(max-width:950px){
-            width:100%;
-             height:100%;
-            
-
-       }
+           object-fit:fill;
+             width:inherit;
+             height:inherit;
+             
        }
     }
   
@@ -201,6 +208,8 @@ export default{
     }
     .date{
          width:78%;
+         line-height:1.2;
+         padding-top:1.5%;
       
     }
 

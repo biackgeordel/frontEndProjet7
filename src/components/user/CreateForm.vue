@@ -183,28 +183,41 @@ export default{
 <style lang="scss" scoped>
 .container-form{
     box-sizing: border-box;
-      height:100vh;
+    width:100%;
+    height:100vh;
     display: flex;
     justify-content:space-between;
-  
+    align-items: center;
    @media (max-width:950px){
        flex-direction: column;
-       align-items: center;
+      justify-content:start;
+       h1,h2{
+           font-size:5vw;
+       }
+       label,div,input,button{
+           font-size:4vw;
+       }
    }
  
     .element_form{
         width:50%;
-        height:100%;
-        
+        height:90%;        
          @media (max-width:950px){
              width:100%;
+             &:first-child{
+                 padding-top:10%;
+                 height:30vw;  
+             }
+             &:last-child{
+                 height:inherit;
+             }
+        }
    }
+
         
        // border:1px solid green;
         h1,h2{
             text-align:center;
-            padding-top:10%;
-            padding-left:-10%;
             color:#2f3542;
              font-weight:bold;
         }
@@ -212,10 +225,13 @@ export default{
     .form{
         display: flex;
         flex-direction: column;
-        padding-left:10%;
          width:80%;
-         margin-top:2%;
-         height:100%;
+         margin:auto;
+         height:inherit;
+         input{
+             width:100%;
+             height: inherit;
+         }
         .btn{
             width:30%;
             margin-left:5%;
@@ -227,7 +243,7 @@ export default{
    }
         }
     }
-}
+
 label{
     color:#2f3542;;
     font-weight:bold;
@@ -235,6 +251,5 @@ label{
 .test{
     color:#c0392b;
 }
-
 
 </style>

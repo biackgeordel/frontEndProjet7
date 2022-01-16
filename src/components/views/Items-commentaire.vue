@@ -17,6 +17,10 @@ props:['coments','MessageId','like','disLike'],
 components:{
     commentaire
 },
+watch:{
+
+
+}
 
 
 }

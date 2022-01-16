@@ -47,7 +47,9 @@
                     <!--<p class="my-4">aucunes notification</p>-->
                     <div v-for="val in commentaires" :key="val.id">
                       <router-link :to="{name:'one',params:{id:val.Message.id}}">
-                        <p>    {{val.User.username}} à commenté le message {{val.Message.title}}</p>
+                        <p>    {{val.User.username}} à commenté le message {{val.Message.title}}le {{
+                          val.createdAt}}
+                        </p>
                       </router-link>
                  
                     </div>

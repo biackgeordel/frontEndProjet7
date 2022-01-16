@@ -3,29 +3,28 @@
  <div>
         <div class="commande">
                         
-            <div class="nombre-commentaire" style="color:#2c2c54 ;font-weight:bold" @click.prevent="showCommentaire=!showCommentaire">
+            <div class="nombre-commentaire" @click.prevent="showCommentaire=!showCommentaire">
                 <p v-b-tooltip.hover title=" Voir les commentaires">
-                    commentaire:{{tabcommentaire.length}}
+                   Commentaire :{{ tabcommentaire.length }} 
                 </p>
             </div>
-        <b-button :variant="colorLike"  :disabled="valid" id="likes"
+        <div class="box-icon" :id="`${MessageId}like`" aria-label="button like"
           v-b-tooltip.hover title="J'aime"
-        @click.prevent="addLikes" >
+        @click.prevent="addLikes" >J'aime
               <b-icon icon="hand-thumbs-up"></b-icon> {{tabLikes.length}}
-        </b-button>
+        </div>
 
-        <b-button :variant="colorDisLike"  @click.prevent="addDisLikes"
-         v-b-tooltip.hover title="Je n'aime pas"
-         :disabled="validation" id="dislikes">
+        <div class="box-icon dislike"  @click.prevent="addDisLikes" :id="`${MessageId}disLike`"
+         v-b-tooltip.hover title="Je n'aime pas">Je n'aime pas
 
             <b-icon icon="hand-thumbs-down"></b-icon> {{tabDisLikes.length}} 
-        </b-button>
+        </div>
        
            
-        <b-button variant="primary" @click="msgbutton=!msgbutton"
+        <div class="box-icon" @click="msgbutton=!msgbutton"
         v-b-tooltip.hover title="Ecrire un commentaire">
              <b-icon icon="chat-dots-fill"></b-icon>
-        </b-button>
+        </div>
         </div>
               <div v-show="msgbutton" class="form-floating">
                  <textarea v-model="msg" class="form-control" placeholder="Leave a comment here"></textarea>
@@ -108,13 +107,12 @@ export default{
            msg:"",//variable contenant le commentaire  du textarea
             showCommentaire:true,
             likes:0,//determine l'etat du bouton likes valeur possible 0 et 1
-            dislikes:0,//determine l'etat du bouton dislikes valeur possible 0 et -1
+            dislikes:0,//determine l'etat du bouton dislikes valeur possible 0 et 1
             tabLikes:[],//tableau contenant les users qui aiment le message
             tabDisLikes:[],// tableau contenant les users qui n'aiment pas le message 
-            validation:false, //variable qui determine si le bouton likes est active
-            valid:false,//variable qui determine si le bouton dislikes est active
-            colorLike:'primary',
-            colorDisLike:'primary'
+            validDislikes:false, //variable qui determine si le bouton likes est active
+            validLikes:false,//variable qui determine si le bouton dislikes est active
+          
     
         
         
@@ -128,24 +126,7 @@ export default{
         this.tabDisLikes=this.disLike
     },
     mounted(){
-              let userId=JSON.parse(localStorage.getItem('user')).idUser;
-             this.tabLikes.forEach(element=>{
-            if(element.UserId===userId && element.MessageId===this.MessageId){
-                console.log('user existe');
-                console.log(element.UserId);
-                console.log(JSON.parse(localStorage.getItem('user')).idUser);
-               this.likes=1;
-             }
-        })
-           this.tabDisLikes.forEach(element=>{
-            if(element.UserId===userId && element.MessageId===this.MessageId){
-                console.log('user existe dans tabDisLikes');
-                console.log(element.UserId);
-                console.log(JSON.parse(localStorage.getItem('user')).idUser);
-               this.dislikes=-1;
-             }
-        });
-       
+       this.validAvis();
 
     },
     watch:{
@@ -153,41 +134,55 @@ export default{
             console.log('show:',this.tabcommentaire);
         this.showCommentaire=(this.tabcommentaire.length>=4) ? false :true;
         },
-        likes(){
-            if(this.likes===1){
-                 this.colorLike="success";
-                this.validation=true;
-            }else if(this.likes===0){
-                this.validation=false
-               this.colorLike="primary";
-            }
-            console.log('valid:',this.validation,'like:',this.likes);
-            return this.validation;
-
+        coments(){
+            this.tabcommentaire=this.coments;
         },
-        dislikes(){
-            if(this.dislikes===-1){
-                 this.colorDisLike="danger";
-                this.valid=true;
-            }else if(this.dislikes===0){
-                this.valid=false;
-               this.colorDisLike="primary";
-            }
-            console.log('valid:',this.valid,'like:',this.dislikes);
-            return this.valid;
-
-        },
+    
             tabDisLikes(){
-       
             console.log('new tabDislikes:',this.tabDisLikes);
+            return this.tabDisLikes;
         },
 
         tabLikes(){
-       
             console.log('new tablikes:',this.tabLikes);
+            return this.tabLikes;
         }
     },
     methods:{
+        //attributttion des valeurs à likes et dislikes
+        validAvis(){
+            let validLike=false;
+            let validDislike=false;
+            let userId=JSON.parse(localStorage.getItem('user')).idUser;
+             this.tabLikes.forEach(element=>{
+            if(element.UserId===userId && element.MessageId===this.MessageId){
+                console.log('user existe');
+                console.log(element.UserId);
+                console.log(JSON.parse(localStorage.getItem('user')).idUser);
+                validLike=true; 
+             }
+        })
+           this.tabDisLikes.forEach(element=>{
+            if(element.UserId===userId && element.MessageId===this.MessageId){
+                console.log('user existe dans tabDisLikes');
+                console.log(element.UserId);
+                console.log(JSON.parse(localStorage.getItem('user')).idUser);
+                validDislike=true;
+             }
+        });
+            if(validLike){
+            document.getElementById(`${this.MessageId}disLike`).classList.add('hide');
+            }else{
+                document.getElementById(`${this.MessageId}disLike`).classList.remove('hide');
+            }
+            if(validDislike){
+                 document.getElementById(`${this.MessageId}like`).classList.add('hide');
+            }else{
+                 document.getElementById(`${this.MessageId}like`).classList.remove('hide');
+            }
+
+        },
+
        publier(){
             let msg={
                  MessageId:this.MessageId,//id du message
@@ -206,7 +201,6 @@ export default{
             this.$http.get(`/oneCommentaire/${response.data.comments.id}`).
               then(response=>{
                    this.tabcommentaire=[...this.tabcommentaire,response.data];
-                   this.validation();
                     
               }).catch(error=>{
                   console.log(error);
@@ -223,19 +217,21 @@ export default{
                
         },
         addLikes(){
-
-            let idLike=''
+            let valid=false;
+             let idLike=''
             let userId=JSON.parse(localStorage.getItem('user')).idUser;
              this.tabLikes.forEach(element => {
                 if(element.UserId===userId && element.MessageId===this.MessageId){
                     console.log('id like',element.id);
                     idLike=element.id;
-                    this.likes=1;
+                    valid=true;
                 }  
                  });
           
+            //ajout d'un like
+             if(valid===false){
 
-             if(this.likes===0){ this.$http.post('/addLike',
+                  this.$http.post('/addLike',
                     {
                     UserId:userId,
                     MessageId:this.MessageId },
@@ -246,12 +242,13 @@ export default{
                         if(response.status===200){
                             console.log('like:',response.data.like);
                         this.tabLikes=[...this.tabLikes,response.data.like];
-                        this.likes=1;
+                        this.validAvis();
                         }
                     }).catch(error=>{
                         console.log(error)
                     })
-                }else if(this.likes===1){
+                    //suppression d'un like
+                }else if(valid===true){
                     console.log('delete:',idLike);
                     console.log(userId);
                     this.$http.delete(`/delete/${idLike}/${userId}`).then(response=>{
@@ -262,7 +259,7 @@ export default{
                             console.log( 'element a supprimer:',this.tabLikes[i]);
                             this.tabLikes.splice(i,1);
                             console.log('new tab:',this.tabLikes);
-                            this.likes=0;
+                            this.validAvis();
                         }
 
 
@@ -277,17 +274,18 @@ export default{
         },
          addDisLikes(){
           let idDisLike=''
+            let valid=false;
             let userId=JSON.parse(localStorage.getItem('user')).idUser;
              this.tabDisLikes.forEach(element => {
                 if(element.UserId===userId && element.MessageId===this.MessageId){
                     console.log('id dislike',element.id);
                     idDisLike=element.id;
-                    this.dislikes=-1;
+                    valid=true;
                 }  
                  });
           
 
-             if(this.dislikes===0){
+             if(valid===false){
              this.$http.post('/addDisLike',
                     {
                     UserId:userId,
@@ -298,12 +296,12 @@ export default{
              ).then(response=>{ if(response.status===200){
                  console.log('DisLike:',response.data.disLike);
                 this.tabDisLikes=[...this.tabDisLikes,response.data.disLike];
-                this.dislikes=-1;
+                    this.validAvis();
                         }
                 }).catch(error=>{
                   console.log(error)
                     })
-                }else if(this.dislikes===-1)
+                }else if(valid===true)
                 {
                     console.log('delete:',idDisLike);
                     console.log(userId);
@@ -312,10 +310,10 @@ export default{
                 if(response.data===1){
                   for(let i=0;i<this.tabDisLikes.length;i++){
                   if(this.tabDisLikes[i].id===idDisLike && this.tabDisLikes[i].UserId===userId){
-                    console.log( 'element a supprimer:',this.tabDisLikes[i]);
+                    console.log( 'element  supprimer:',this.tabDisLikes[i]);
                     this.tabDisLikes.splice(i,1);
                     console.log('new tab:',this.tabDisLikes);
-                    this.dislikes=0;
+                    this.validAvis();
                      }
                 } }
                 }).catch(error=>{
@@ -342,7 +340,8 @@ button{
 
 .box-commentaire{
    margin-bottom:2%;
-   display:flex;  
+   display:flex;
+   justify-content:center;
    margin-top:2%;
 }
 .form-floating{
@@ -364,28 +363,61 @@ button{
 }
 .commande{
     width:100%;
+    height:3.5vw;
+     color:#7f8c8d;
+   // background-color:#f7f1e3;
+       @media(max-width:950px){
+            height:8vw;
+          
+        }  
    border-top:2px solid #ecf0f1;
     margin: auto;
     display: flex;
     align-items: center;
-    justify-content: center;
-    button{
-        width:65px;
-        height: 50%;
+    justify-content:space-between;
+   //  border:1px solid red;
+    .box-icon{
+        width:150px;
+        height:inherit;
+        font-size:14px;
+        text-align: center;
+        cursor:pointer;
+          &:hover{
+            background-color:rgba(56, 173, 169,1.0);//rgba(241, 242, 246,0.7);
+            transition:all 0.2s ease-in-out;
+            color:white;
+        }  
+        padding-top:1%;
+         // border:1px solid red;
         @media(max-width:950px){
-            width:15%;
+            width:25%;
             font-size:3vw;
-        }       
+          
+        } 
+          
         .b-icon.bi{
-              font-size:17px;
+              font-size:25px;
               text-align: center;
              @media(max-width:950px){
-              font-size:3vw;}
+             font-size:3.5vw;
+             }
         }   
         }
     }
            .nombre-commentaire{
-           padding-top:4.5%;
+           padding-top:2%;
+           width:25%;
+            color:#34495e;
+           text-align: center;
+           height: inherit;
+            &:hover{
+            background-color:rgba(56, 173, 169,1.0);//rgba(241, 242, 246,0.7);
+            transition:all 0.2s ease-in-out;
+            color:white;
+        }  
+           @media(max-width:950px){
+               padding-top:1%
+           }
           p{
             cursor: pointer;
              }
@@ -393,12 +425,16 @@ button{
 }
 
 .id-user{
- width:15%;
- padding-left:5%;
-//border:1px solid blue;
+ width:9%;
+ //padding-left:1%;
  .photo-user{
-    width:4vw;
-    height:4vw;
+    width:3vw;
+    height:3vw;
+ @media(max-width:950px){
+      width:8vw;
+    height:8vw;
+       
+    }
     margin-top:5%;
      img{
    display: inline-block;
@@ -410,16 +446,24 @@ button{
  }
 }
 .zone-commentaire{
-    width:70%;
+    width:80%;
+    font-size:15px;
+      @media(max-width:950px){
+        font-size:inherit;
+    }
 
 }
 .info-date{
     font-size:14px;
-    font-weight:bold;
     color:#2c3e50;
     @media(max-width:950px){
         font-size:2vw;
     }
+}
+.hide{
+  pointer-events: none;
+   opacity:0.8;
+   color:#f1c40f;
 }
 
 
