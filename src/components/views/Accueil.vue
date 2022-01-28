@@ -16,9 +16,6 @@
                      <li class="nav-item">
                      <router-link class="nav-link" :to="{name:'new'}">Partager  une image <b-icon icon="camera" font-scale="1.5"></b-icon></router-link>
                      </li>
-                       <li class="nav-item">
-                     <router-link class="nav-link" :to="{name:'new'}">Partager une video <b-icon icon="camera" font-scale="1.5"></b-icon></router-link>
-                     </li>
 
                  </ul>
             </div>
@@ -45,7 +42,7 @@ export default {
 
 }
     .cont{
-      background-color:#ecf0f1;
+      background-color:#f1f2f6;
     }
     
 </style>

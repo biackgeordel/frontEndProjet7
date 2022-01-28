@@ -68,12 +68,14 @@ export default{
 </script>
 <style lang="scss" scoped>
    .box-message{
-      border-radius:10px;
+      border-top-left-radius: 10px;
+      border-top-right-radius:10px;
       box-sizing: border-box;
       width:45vw;
       background-color:#ffffff;
+      //rgb(184, 184, 185)
       margin:auto;
-      box-shadow:-1px -1px  5px  rgb(184, 184, 185),1px 1px  5px  rgb(184, 184, 185);
+      box-shadow:-1px -1px  5px rgba(220, 221, 225,1.0),1px 1px  5px rgba(220, 221, 225,1.0);
       margin-top:2%;
       margin-bottom:2%;
       @media (max-width:950px){
@@ -185,8 +187,6 @@ export default{
           text-align:center;
           
          h4{
-           // text-transform: uppercase;
-            font-weight:bold;
              font-size:18px;
              @media(max-width:950px){
                 font-size:4vw;

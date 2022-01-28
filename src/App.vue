@@ -34,6 +34,6 @@ export default {
 
 <style lang="scss">
 #app{
-  font-family:"Roboto",sans-serif;
+ font-family: 'Lexend Deca', sans-serif;
 }
 </style>

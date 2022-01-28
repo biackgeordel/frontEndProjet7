@@ -32,7 +32,7 @@ export default new vueRouer({
             
         },
         {
-            path:'/Accueil/:user',
+            path:"/Accueil/:user",
             component:Accueil,
             beforeEnter:(to,from,next)=>{
                 if(localStorage.getItem('auth')){
