@@ -1,7 +1,7 @@
 <template>
         <div>
           <div >
-            <div v-for="items in datas" :key="items.id">
+            <div v-for="items in data" :key="items.id">
                        <div>
                       <items-message :items="items"></items-message>
                     </div>
@@ -22,9 +22,13 @@ components:{
    
 },
 props:['datas'],
-created(){
-  this.$store.dispatch('fetchGetCommentaire');
-}
+computed:{
+  data(){
+    return this.datas;
+  }
+
+},
+
 }
 
 </script>

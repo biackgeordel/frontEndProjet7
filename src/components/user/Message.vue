@@ -1,6 +1,8 @@
 <template>
    <div>
-      <div  class="box-message">
+      
+      <div v-for="val in tabMessage" :key="val.id">
+         <div  class="box-message">
            <div class="box-info-user">
               <div class="box-info-user__img">
                  <img :src="val.User.urlImage" alt="photo user"/>
@@ -16,7 +18,9 @@
              </div>
 
               <div class="box-info-user__btn">
-                 <button v-b-tooltip.hover title="supprimer l'image">X</button>
+                 <button v-if="val.User.username===localUsername" 
+                 @click.stop="deleteMessage(val)"
+                 v-b-tooltip.hover title="supprimer l'image">X</button>
               </div>             
            </div>         
             <div class="box-img">
@@ -34,33 +38,66 @@
             </div>
                
         </div>
+      </div>
       
    </div>
 </template>
 <script>
 
 import itemsCommentaire from "../views/Items-commentaire.vue";
+//import { mapState } from 'vuex';
 export default{
     name:"Message",
-    props:['items'],
     components:{
      itemsCommentaire  
 
     },
     data(){
        return{
-          val:this.items
+          localUsername:JSON.parse(localStorage.getItem('user')).username,
+          tabMessage:[]
        }
     },
-    watch:{
-       items(){
-               this.val=this.items;
-        
-       }
-    }
-
+    mounted(){
+     this.fetchGetAllMessage();
+    },
+       computed:{
+      /*  ...mapState([
+            'allMessage'
+        ]),*/
+    },
    
+    methods:{
+       deleteMessage(val){
+          console.log('id du message',val.id);
+          const messageId=val.id;
+          const userId=JSON.parse(localStorage.getItem('user')).idUser;
+       
+          this.$http.delete(`/deleteMessage/${messageId}/${userId}`).then(response=>{
+             if(response.data===1){
+                console.log('supprimer');
+                this.fetchGetAllMessage();
+        
 
+             }
+          })
+       },
+       fetchGetAllMessage(){
+             this.$http.get('/allmessage').then(response=>{
+                if(response.status===200){
+                    console.log(response.data);
+                    this.tabMessage=response.data;
+                }
+         }).catch(error=>{
+             console.log(error);
+         })
+          
+       }
+
+           
+
+
+    },
   
 }
 
@@ -75,7 +112,7 @@ export default{
       background-color:#ffffff;
       //rgb(184, 184, 185)
       margin:auto;
-      box-shadow:-1px -1px  5px rgba(220, 221, 225,1.0),1px 1px  5px rgba(220, 221, 225,1.0);
+      box-shadow:-2px -2px  5px rgb(184, 184, 185),2px 2px  5px rgb(184, 184, 185);
       margin-top:2%;
       margin-bottom:2%;
       @media (max-width:950px){
@@ -196,7 +233,7 @@ export default{
          
        }
     .description{
-       font-family:'Heebo',sans-serif;
+       font-family:'Roboto',sans-serif;
        text-align:justify;
        overflow-wrap: break-word;
        padding:2%;

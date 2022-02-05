@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-        <the-header :commentaire="commentaire"></the-header>
+        <the-header></the-header>
         <router-view></router-view>    
     
   </div>
@@ -9,7 +9,7 @@
 
 
 <script>
-import { mapState } from 'vuex';
+//import { mapState } from 'vuex';
 import TheHeader from "./components/views/TheHeader.vue";
 export default {
   name: 'app',
@@ -17,14 +17,14 @@ export default {
     TheHeader
   },
   created(){
-    this.$store.dispatch('fetchGetCommentaire');
+   // this.$store.dispatch('fetchGetCommentaire');
   },
   computed:{
-    ...mapState([
+   /* ...mapState([
       'commentaire'
     ]
       
-    )
+    )*/
   }
 
 }
@@ -34,6 +34,6 @@ export default {
 
 <style lang="scss">
 #app{
- font-family: 'Lexend Deca', sans-serif;
+ font-family: 'Heebo', sans-serif;
 }
 </style>

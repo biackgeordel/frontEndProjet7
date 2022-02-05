@@ -1,8 +1,7 @@
 <template>
       <div>
           <user :datas="datas" :user="username"></user>
-          {{username}}
-
+         
       </div>
     
   
@@ -18,10 +17,6 @@ export default{
     created(){
         console.log( 'created profil: ',this.$router);
         this.$store.dispatch('fetchGetOne');
-    },
-    mounted(){
-      
-      
     },
     computed:{
       ...mapState([

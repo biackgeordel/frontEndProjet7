@@ -42,11 +42,9 @@
                               <div class="zone-commentaire">
                                   <span> <strong>{{val.User.username}}</strong></span><br/>
                                  <span class="info-date">commenté le :{{val.createdAt}}</span> 
-                                 <p v-zoneText  class="bg-success text-dark bg-opacity-10">
+                                 <div v-zoneText  class="">
                                      {{val.description}}
-                                 </p> 
-                              
-                               
+                                     </div>
                               </div>
                          </div> 
                      </div>
@@ -66,11 +64,11 @@ export default{
         zoneText:(el)=>{
             //on defini le style par defaut de la zone de texte
               el.style.overflow="break-word";
-               el.style.borderRadius="15px";
-               el.style.fontFamily="'Heebo', sans-serif";
+               el.style.borderRadius="2vw";
                 el.style.lineHeight="1.5";
-                el.style.lineHeight="1.5";
-                el.style.padding="1%";
+                el.style.padding="1.5% 3%";
+                el.style.backgroundColor="rgba(209, 216, 224,0.3)";
+                
                
                 if(el.innerText.length<10){
                     el.style.width="15%"
@@ -78,16 +76,18 @@ export default{
                 }
                 else if(el.innerText.length<=20){
                      el.style.width="30%";
-                    el.style.textAlign="center"
-                 
+                  el.style.lineHeight="1.2";  
                 }
                 else if(el.innerText.length<=60){
                     el.style.width="45%";
-                    el.style.textAlign="center"
-                }else{
-                      el.style.width="100%"
-                   // el.style.border="1px solid red";   
-                }        
+                     el.style.lineHeight="1.2";  
+                }else if(el.innerText.length<=100){
+                      el.style.width="55%"
+                     el.style.lineHeight="1.2";  
+                } else{
+                    el.style.width="100%";
+                      el.style.borderRadius="2vw";
+                }      
         }
     },
 
@@ -142,9 +142,7 @@ export default{
         });
             if(validLike){
             document.getElementById(`${this.MessageId}like`).classList.add('hide');
-            console.log('ajouter');
             }else{
-                 console.log('enlever');
                 document.getElementById(`${this.MessageId}like`).classList.remove('hide');
 
             }
@@ -178,8 +176,6 @@ export default{
           }).catch(error=>{
               console.log(error);
           });
-         
-       
            this.msgbutton=false;
              this.msg="";
                
@@ -323,6 +319,7 @@ export default{
                   this.axiosAddDisLike(userId);
                  }
                  this.validAvis();
+                 
         }
     }
          
@@ -444,6 +441,7 @@ button{
 .zone-commentaire{
     width:80%;
     font-size:15px;
+    margin-bottom:2%;
       @media(max-width:950px){
         font-size:inherit;
     }

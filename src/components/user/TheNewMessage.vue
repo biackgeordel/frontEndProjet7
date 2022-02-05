@@ -51,7 +51,8 @@ export default{
             message:{
                 title:"",
                 description:"",
-               idUser:""
+               idUser:"",
+               dossier:""
             },
             valid:true,
             validImage:false,
@@ -63,6 +64,8 @@ export default{
     mounted(){
         //on recupere user stocké dans le localStorage
        this.message.idUser=JSON.parse(localStorage.getItem('user')).idUser;
+       //le nom du dossier pour stoker les images créeés 
+       this.message.dossier=JSON.parse(localStorage.getItem('user')).username;
        console.log('mounted newmessage user:',this.message.idUser)
 
     },

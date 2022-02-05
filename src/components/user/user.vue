@@ -11,7 +11,12 @@
 
                 <div class='btn-command'>
                     <b-button v-b-modal.modal-prevent-closing variant="outline-primary">Modifier</b-button>
-                    <b-button  variant="outline-primary">Supprimer</b-button>
+                     <div>
+                           <b-button  v-b-modal.modal-1 variant="outline-primary">Supprimer</b-button>
+                          <b-modal id="modal-1" title="Supprime le compte ">
+                          <p class="my-4">Voulez-vous supprimer vôtre compte</p>
+                          </b-modal>
+                          </div>
                 </div>
                  <b-modal
       id="modal-prevent-closing"
@@ -77,7 +82,8 @@ export default{
          userInfo:{
            ville:"",
            pays:"",
-           bio:""
+           bio:"",
+           dossier:JSON.parse(localStorage.getItem('user')).username
          },
          file:File,
          urlImage:""
@@ -165,6 +171,9 @@ export default{
          
            
         },
+        deleteCompte(){
+          console.log("vous allez supprimer votre compte");
+        }
     }
   
 

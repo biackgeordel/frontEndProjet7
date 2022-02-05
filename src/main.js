@@ -18,12 +18,6 @@ axios.interceptors.request.use((req)=>{
 
 
 axios.interceptors.response.use((res)=>{
-  console.log(res);
-  console.log('mon token:',res.data.token);
-   /* if(res.data.token){
-      
-    }*/
-
  
   return res;
 });

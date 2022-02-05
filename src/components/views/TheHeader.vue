@@ -36,25 +36,7 @@
               </b-nav-item>
 
               <b-nav-item>
-                <!--bouton pour afficher le modal-->
-                <b-link  v-b-modal.modal-no>
-                   Notification
-                   <b-icon icon="bell"></b-icon>
-                      <b-badge pill style="background-color:red" variant="info" >{{commentaires.length}} </b-badge>
-                </b-link>
-                 
-                  <b-modal id="modal-no" title="nouveaux commentaires">
-                    <!--<p class="my-4">aucunes notification</p>-->
-                    <div v-for="val in commentaires" :key="val.id">
-                      <router-link :to="{name:'one',params:{id:val.Message.id}}">
-                        <p>    {{val.User.username}} à commenté le message {{val.Message.title}}le {{
-                          val.createdAt}}
-                        </p>
-                      </router-link>
-                 
-                    </div>
-                  
-                 </b-modal>                  
+                <!--bouton pour afficher le modal-->                        
               </b-nav-item>
               <b-nav-item   @click.prevent="deconnexion">
                 <b-link href="#">
@@ -73,7 +55,6 @@
 
 export default{
     name:"TheHeader",
-    props:['commentaire'],
     data(){
       return {
         username:'',
