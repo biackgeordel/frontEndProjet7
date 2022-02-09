@@ -55,7 +55,8 @@ export default{
             form:{
                 email:'',
                 password:'',
-                username:'',  
+                username:'',
+                date:(new Date()).toLocaleDateString()
             },
             msg:"",//variable pour afficher les erreurs
             validErrorServer:false,//boolean pour afficher les messages du serveur
@@ -98,6 +99,7 @@ export default{
            },
                //method pour créer un compte user
              signupUser(){
+                 console.log('date:',this.form.date);
                 this.$http.post('/signup',{...this.form})
                 .then(response=>{
                      if(response.status===201){

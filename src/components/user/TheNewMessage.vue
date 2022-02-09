@@ -52,7 +52,8 @@ export default{
                 title:"",
                 description:"",
                idUser:"",
-               dossier:""
+               dossier:"",
+               date:(new Date()).toLocaleDateString()
             },
             valid:true,
             validImage:false,

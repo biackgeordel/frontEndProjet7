@@ -1,7 +1,7 @@
 <template>
       <div>
-          <user :datas="datas" :user="username"></user>
-         
+          <user :datas="datas" :username="username"></user>
+        
       </div>
     
   

@@ -5,51 +5,63 @@
             <div class="d-flex p-4 justify-content-between">
                 <div>
                   <b-img v-bind="mainProps" thumbnail
-                  fluid :src="users.urlImage" alt="Image 1"></b-img>
-                  <h3>{{user}}</h3>
+                  fluid :src="users.urlImage" :alt="'photo du profil de '+username"></b-img>
+                  <h3>{{username}}</h3>
                 </div>
 
                 <div class='btn-command'>
                     <b-button v-b-modal.modal-prevent-closing variant="outline-primary">Modifier</b-button>
-                     <div>
-                           <b-button  v-b-modal.modal-1 variant="outline-primary">Supprimer</b-button>
-                          <b-modal id="modal-1" title="Supprime le compte ">
-                          <p class="my-4">Voulez-vous supprimer vôtre compte</p>
-                          </b-modal>
-                          </div>
+                    <b-button  v-b-modal.modal-1 variant="outline-primary">Supprimer</b-button>
                 </div>
-                 <b-modal
-      id="modal-prevent-closing"
-      ref="modal"
-      title="Modifier vos informations"
-      @hidden="resetModal"
-      @show="resetModal"
-      @ok="handleOk"
-    >
-      <form ref="form" @submit.prevent="handleSubmit"  enctype="multipart/form-data">
-
-        <b-form-group  label="Ville"  label-for="ville-input">
+      <!--Modal pour modifier les informations de l'utilisateur --->
+    <b-modal
+        id="modal-prevent-closing"
+        ref="modal"
+        title="Modifier vos informations"
+        @hidden="resetModal"
+        @show="resetModal"
+        @ok="handleOk"
+      >
+        <form ref="form" @submit.prevent="handleSubmit"  enctype="multipart/form-data">
+          <b-form-group  label="Ville"  label-for="ville-input">
           <b-form-input id="ville-input" v-model="userInfo.ville" required></b-form-input>
-        </b-form-group>
+          </b-form-group>
 
-        <b-form-group label="pays"  label-for="pays-input">
+          <b-form-group label="pays"  label-for="pays-input">
           <b-form-input id="pays-input" v-model="userInfo.pays" required></b-form-input>
-        </b-form-group>
+          </b-form-group>
           <label for="textarea">Biographie</label>
-         <b-form-textarea id="textarea" v-model="userInfo.bio" placeholder="" rows="3" max-rows="6" >
-         </b-form-textarea>
+          <b-form-textarea id="textarea" v-model="userInfo.bio" placeholder="" rows="3" max-rows="6" >
+          </b-form-textarea>
            <b-form-file
            class="mt-3" plain
-            accept=".png,.jpg,.gif"
+            accept=".png,.jpg,.gif,.webp"
             @change="uploadImage" 
-            
-            ></b-form-file>
-      </form>
+            >
+            </b-form-file>
+        </form>
     </b-modal >
+    <!---Modal pour supprimer le compte de l'utilsateur----> 
+    <b-modal
+        id="modal-1" 
+        title="Supprime le compte"
+        ref="modal"
+       @ok="deleteCompte"
+      
+      
+      
+      >
+        <div class="my-4">
+          <h5>Voulez-vous supprimer vôtre compte ?</h5>
+         <strong>En cliquant sur ok toutes vos informations 
+           seront supprimées de l'application</strong>
+        </div>
+ 
+        
+    </b-modal>
             
                
             </div>
-            {{user}}
                 <hr/> 
             <div class="box-info">
                 <h2>Informations</h2>
@@ -74,7 +86,7 @@
 
 export default{
     name:"user",
-    props:['user','datas'],
+    props:['username','datas'],
     data(){
     return{
         show:false,
@@ -172,7 +184,21 @@ export default{
            
         },
         deleteCompte(){
-          console.log("vous allez supprimer votre compte");
+          const idUser=JSON.parse(localStorage.getItem('user')).idUser;
+          this.$http.delete(`/deleteUser/${idUser}`).then(response=>{
+            if(response.data===1){
+              console.log("compte supprimé");
+              localStorage.removeItem('user');
+              localStorage.removeItem('auth');
+            window.setTimeout(()=>{
+                    this.$router.push({
+                path:'/login'
+              })
+            },3000);
+       
+            }
+          })
+      
         }
     }
   

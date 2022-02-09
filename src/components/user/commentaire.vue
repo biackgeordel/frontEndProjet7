@@ -159,7 +159,8 @@ export default{
             let msg={
                  MessageId:this.MessageId,//id du message
                 description:this.msg,           
-                UserId:userId
+                UserId:userId,
+                date:(new Date()).toLocaleDateString()
             }
           console.log(msg);
          this.$http.post('/addCommentaire', msg,{

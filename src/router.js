@@ -65,7 +65,7 @@ export default new vueRouer({
                     
                 },
                 {
-                    path:'profil/:username',
+                    path:'profil',
                     name:'profil',
                     component:Profil,
                     props:true

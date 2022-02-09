@@ -9,7 +9,7 @@
             <b-navbar-nav class="nav-bard" v-if="!username">
 
               <b-nav-item >
-                <router-link  :test="lien" 
+                <router-link 
                 
                   :class="{active:lien==='connexion'}"
                   aria-current="page" :to="{name:'connexion'}">
@@ -18,7 +18,7 @@
               </b-nav-item>
 
               <b-nav-item >
-                <router-link  :test="lien" 
+                <router-link  
                   :class="{active:lien==='createdCompte'}"
                   aria-current="page" :to="{ name:'createdCompte'}">
                   Créer un compte
@@ -61,7 +61,7 @@ export default{
         test:false
        
       }
-  },   mounted(){
+  },   created(){
     console.log('la route dans app.vue', this.$route.path);
      if(localStorage.getItem('user')){
           this.username=JSON.parse(localStorage.getItem('user')).username;
@@ -70,14 +70,14 @@ export default{
   }
     },
   updated(){
-    console.log('la route dans app.vue', this.$route.path);
+  
      if(localStorage.getItem('user')){
           this.username=JSON.parse(localStorage.getItem('user')).username;
-    console.log('created app :',this.username);
+    console.log('updated :',this.username);
    
-        
-  }
-
+    }else{
+      this.username="";
+    }      
   },
  computed:{
          lien(){
