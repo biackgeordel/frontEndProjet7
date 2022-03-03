@@ -1,7 +1,7 @@
 <template>
    <div>
       
-      <div v-for="val in tabMessage" :key="val.id">
+      <div class="ml" v-for="val in tabMessage" :key="val.id">
          <div  class="box-message">
            <div class="box-info-user">
               <div class="box-info-user__img">
@@ -12,7 +12,7 @@
                     <strong>
                             {{val.User.username.replace(`${val.User.username.charAt(0)}`,`${val.User.username.charAt(0).toUpperCase()}`)}}
                     </strong>
-                   <br/>à partagé le {{ val.createdAt }}
+                   <br/>à publié le {{ val.dateMessage }}
                  </div>
                    
              </div>
@@ -104,151 +104,98 @@ export default{
 
 </script>
 <style lang="scss" scoped>
-   .box-message{
-      border-top-left-radius: 10px;
-      border-top-right-radius:10px;
-      box-sizing: border-box;
-      width:45vw;
-      background-color:#ffffff;
-      //rgb(184, 184, 185)
-      margin:auto;
-      box-shadow:-2px -2px  5px rgb(184, 184, 185),2px 2px  5px rgb(184, 184, 185);
-      margin-top:2%;
-      margin-bottom:2%;
-      @media (max-width:950px){
-        font-size:3vw;
-        width:100%;
-          margin-bottom:4%;
-        box-shadow:none;
-        border-radius: 0%;
-  
-       
-        
-      }       
- 
-    }
-    .box-info-user{
-       width:100%;
-       display: flex;
-       justify-content: space-between;
-       align-items:flex-start;
-       &__img{
-          width:10%;
-          height:100%;
-          padding:1%;
-          img{
-            display: inline-block;
-            position:relative;
-            top:1%;
-             border-radius: 50%;
-             width:3vw;
-             height:3vw;
-             object-fit:fill;
-             @media(max-width:950px){
-               width:8vw;
-               height:8vw;
-             }
-          }
-   
-       }
-    
-       &__btn{
-          width:10%;
-          height:100% !important;
-          text-align: right;
-          padding-right:2%;
-           padding-top:1%;
-          button{
-             outline: none;
-             border: none;
-             color:#34495e;
-             font-size:14px;
-             @media(max-width:950px){
-                 font-size:1vw;
-             }
-             width:2vw;
-           
-             //height:2vw;
-             text-align:center;
-            @media(max-width:950px){
-               font-size:4vw;
-               width:90%;
-               height:100%;
-            }
-             &:hover{
-                 background-color:#bdc3c7;
-                 transition:background-color 2ms ease-in-out;
-
-             }
-      
-
-          }
-
-       }
-    }
-    .box-img{
-       width:100%;
-       height:25vw;
-           @media(max-width:950px){
-             height:100%;
-             width:100%   
-              }
-       text-align: center;
-       margin:auto;
-       img{
-           object-fit:fill;
-             width:inherit;
-             height:inherit;
-             
-       }
-    }
-  
-    .icon-camera{
-       width:3vw;
-       display: inline-block;
-       height:100%;
-       position:relative;
-       left:1vw;
-       bottom:-0.5vw;
+.box-message{
+   width:40%;
+   background-color:#ffff;
        @media(max-width:950px){
-            width:5vw;
-             height:100%;
+        width:100%;
+          }
+  // border:1px solid #bdc3c7;
+  // box-shadow: 1px 1px 6px #bdc3c7,1px 1px 6px #bdc3c7;
+   
+  // border:1px solid red;
+   .box-info-user{
+      height:3.5vw;
+      display: flex;
+      justify-content:space-between;
+      align-items: center;
+      @media(max-width:950px){
+         height:15vw;
+      }
+      &__img{
+         img{
+         display: block;
+         object-fit:cover;
+         width:3vw;
+         height:3vw;
+         border-radius:50%;
+       @media(max-width:950px){
+          width:8vw;
+          height: 8vw;
+         }
 
-       }
-    }
-        .title{
-            width:100%;
-          height:100%;
-         padding-top:2%;
-          overflow-wrap: break-word;
-          text-align:center;
-          
-         h4{
-             font-size:18px;
-             @media(max-width:950px){
-                font-size:4vw;
-             }
-         
+         }
+       
+      }
+   }
+   .box-info-user__btn{
+      width:10%;
+      height: inherit;
+      text-align: center;
+      padding-top:1%;
+    
+      button{
+           background-color:rgba(190, 46, 221,0.5);
+           color:rgba(245, 246, 250,1.0);
+         &:hover{
+            background-color:rgba(190, 46, 221,1.0);
+            color:#ffff;
+            transition: all 1s ease-in-out;
          }
          
-       }
-    .description{
-       font-family:'Roboto',sans-serif;
-       text-align:justify;
-       overflow-wrap: break-word;
-       padding:2%;
-       font-size:15px;
-       @media(max-width:950px){
-          font-size:3vw;
-       }
+      }
       
+   }
+   .date{
+      width:80%;
+      height: inherit;
+   }
+    .box-info-user__img{
+       width: 10%;
+       height: inherit;
+       padding:1% 1%;
     }
-    .date{
-         width:78%;
-         line-height:1.2;
-         padding-top:1.5%;
-      
+    .box-img{//image uploader
+       width:100%;
+       height:inherit;
+       border-top: 5px ridge rgba(26, 1, 1, 0.3);
+       img{
+          width:100%;
+          height:100%;
+          object-fit: fill;
+       }
     }
 
+}
+.ml{
+     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block:1%;
+    align-items: center;
+
+   
+}
+.title{
+   text-align: center;
+}
+.description{
+   word-break: keep-all;
+   //text-align: center;
+   text-align:justify;
+   padding:2%;
+}
+
+  
  
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-         <div>USER {{user}}</div>
+        
       <form  @submit.prevent="envoyer" class="form" enctype="multipart/form-data" method="POST">
                           <div @dragover="dragover" @drop="uploadImage" class="dropzone">
                               <img :src="urlImage" v-show="validImage"/>
@@ -30,11 +30,19 @@
                                     
                                      </div>
                             </div>
+                            <!---gestionnaire d'erreur du serveur---->
+                               <div v-show="error.length!==0" class="alert alert-danger" role="alert">
+                                     <div v-for="(val,index) in error" :key="index">
+                                        {{val}}
+                                     </div>
+                                </div>
+                            <!----------------------------------------------------------->
                     <div class="col-12">
                             <button type="submit"  class="btn btn-primary">Envoyer</button>
                              <button @click.prevent="remove" class="btn btn-primary m-3" v-show="!valid">remove</button> 
                     </div>
                 </form>
+              
                   
            
         
@@ -53,12 +61,13 @@ export default{
                 description:"",
                idUser:"",
                dossier:"",
-               date:(new Date()).toLocaleDateString()
+               date:new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(new Date())
             },
             valid:true,
             validImage:false,
             urlImage:"",
-            file:File
+            file:File,
+            error:[]
 
         }
     },
@@ -100,13 +109,9 @@ export default{
                 }
             
             })
-                }
-                
-            
-            
-         
-           
+                }   
         },
+
         remove(){
             this.urlImage="";
             this.valid=true;
@@ -114,6 +119,7 @@ export default{
             this.file=File;
              this.message.title="";
              this.message.description="";
+             this.error=[];
                 console.log(this.message);
         },
         dragover(event){
@@ -134,8 +140,8 @@ export default{
                 path:`/Accueil/${this.user}`//user stocké en parametre
             })
       
-            }).catch(error=>{//gerer les erreurs duserveurs
-                 console.log(error);
+            }).catch(error=>{//gerer les erreurs du serveurs
+               this.error=error.response.data.message;
              }) 
 
             

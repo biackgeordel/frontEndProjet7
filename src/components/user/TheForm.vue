@@ -23,7 +23,7 @@
                                      </div>
                             </div>
                     <div class="col-12">
-                            <button type="submit" :disabled="validation" class="btn btn-primary">Connexion</button>
+                            <button type="submit" :disabled="validation" class="btn ">Connexion</button>
                     </div>
                 </form>
                         
@@ -191,7 +191,8 @@ export default{
         .btn{
             width:30%;
             margin-left:5%;
-     
+            background-color: #8e44ad;
+            color:#ffff;
             @media (max-width:950px){
              margin-right:100% !important;
                 width:40%;

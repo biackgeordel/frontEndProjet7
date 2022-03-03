@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import vueRouer from 'vue-router';
+import vueRouter from 'vue-router';
 import CreateForm from './components/user/CreateForm.vue';
 import TheForm from './components/user/TheForm.vue';
 import Accueil from './components/views/Accueil.vue';
@@ -8,9 +8,9 @@ import UserHome from './components/views/UserHome.vue';
 import Profil from './components/user/Profil-user.vue';
 import OneMessage from './components/user/OneMessage.vue';
 //on ajoute vueRouter comme plugin a Vue
-Vue.use(vueRouer);
+Vue.use(vueRouter);
 //on export une instance vueRouter
-export default new vueRouer({
+export default new vueRouter({
     mode:'history',
     routes:[
             {

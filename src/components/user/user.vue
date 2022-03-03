@@ -6,12 +6,12 @@
                 <div>
                   <b-img v-bind="mainProps" thumbnail
                   fluid :src="users.urlImage" :alt="'photo du profil de '+username"></b-img>
-                  <h3>{{username}}</h3>
+                  <h3>photo de profil de {{username}}</h3>
                 </div>
 
                 <div class='btn-command'>
-                    <b-button v-b-modal.modal-prevent-closing variant="outline-primary">Modifier</b-button>
-                    <b-button  v-b-modal.modal-1 variant="outline-primary">Supprimer</b-button>
+                    <button class="btn btn-success" v-b-modal.modal-prevent-closing >Modifier</button>
+                    <button class="btn btn-danger" v-b-modal.modal-1  >Supprimer</button>
                 </div>
       <!--Modal pour modifier les informations de l'utilisateur --->
     <b-modal
@@ -39,6 +39,11 @@
             @change="uploadImage" 
             >
             </b-form-file>
+             <div v-show="error.length!==0"  class="alert alert-danger" role="alert" >
+                  <div v-for="(val,index) in error " :key="index">
+                    {{ index }}: {{ val }}
+                  </div>
+            </div>
         </form>
     </b-modal >
     <!---Modal pour supprimer le compte de l'utilsateur----> 
@@ -98,7 +103,9 @@ export default{
            dossier:JSON.parse(localStorage.getItem('user')).username
          },
          file:File,
-         urlImage:""
+         urlImage:"",
+           error:"",
+        
          
     }
     },
@@ -113,7 +120,8 @@ export default{
       resetModal() {
         this.userInfo.ville= '';
         this.userInfo.pays="";
-        this.userInfo.bio=""
+        this.userInfo.bio="";
+        this.error=""
       },
       handleOk(bvModalEvt) {
         // Prevent modal from closing
@@ -134,17 +142,25 @@ export default{
           headers:{'Content-Type': 'multipart/form-data'}
           }
            ).then(response=>{
-             console.log('update:',response);
+             if(response.status===200){
+              console.log('update:',response);
              this.$store.dispatch('fetchGetOne');
               this.resetModal();  
+               this.$nextTick(() => {
+              this.$bvModal.hide('modal-prevent-closing');
+               })
+             }
+       
            }).catch(error=>{
-             console.log(error);
+             console.log(error.response);
+             this.error=error.response.data.message;
+               
+             
+           
            });
          
         
-        this.$nextTick(() => {
-          this.$bvModal.hide('modal-prevent-closing')
-        })
+     
       },
 
      uploadImage(event){ 
@@ -207,7 +223,7 @@ export default{
 
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
     .box-content{
         margin:auto;
         width:50%;
@@ -240,10 +256,13 @@ export default{
                 margin :2px ;
             }
         }
-      
-     
-      
-        
-
     }
+    button{
+      outline: none;
+      border:none;
+      background-color: inherit;
+      font-size:xx-large;
+      font-weight: bold;
+    }
+    
 </style>

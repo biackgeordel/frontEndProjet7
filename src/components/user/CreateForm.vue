@@ -32,7 +32,7 @@
                                      </div>
                             </div>
                             <div class="test" v-show="validError">{{msg}}</div>
-                            <button type="submit" :disabled="validation" class="btn btn-primary">Connexion</button>
+                            <button type="submit" :disabled="validation" class="btn">Valider</button>
                     
                 </form>
                         
@@ -237,6 +237,8 @@ export default{
         .btn{
             width:30%;
             margin-left:5%;
+            color:#ffff;
+            background-color: #8e44ad;;
      
             @media (max-width:950px){
              margin-right:100% !important;

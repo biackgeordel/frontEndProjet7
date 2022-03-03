@@ -1,23 +1,51 @@
 <template>
     
- <div>
-        <div class="commande">
-                        
-            <div class="nombre-commentaire box-hover" @click.prevent="showCommentaire=!showCommentaire">
+ <div>  
+
+           <div class="info-message"> 
+                 <div class="nombre-commentaire box-hover" :class="emojiShow(tabcommentaire)"
+                  @click.prevent="showCommentaire=!showCommentaire">
                 <p v-b-tooltip.hover title=" Voir les commentaires">
-                   Commentaire :{{ tabcommentaire.length }} 
+                  {{ tabcommentaire.length }} commentaires
                 </p>
-            </div>
+                </div>
+                <div class="box-humeur">
+                    <span class="humeur-1" :class="emojiShow(tabLikes)">
+                       <!-- Add the style and icon you want -->
+                      <!-- <font-awesome-icon icon="fa-regular fa-face-grin-beam" size="lg"/>-->
+                       <span
+                        style="display:inline-block" v-html="emoji.facePositif"></span>
+                        {{tabLikes.length}}  
+                    </span>
+                   
+                    <span class="humeur-2" :class="emojiShow(tabDisLikes)" >
+                      <!-- <font-awesome-icon icon="fa-regular fa-face-frown" size="lg" />-->
+                       <span style="display:inline-block"
+                       v-html="emoji.faceNegatif"></span>
+                        {{tabDisLikes.length}}  
+                    </span>
+                  
+                    
+                </div>
+              
+               
+          </div>  
+
+
+
+
+        <div class="commande">
+
         <div class="box-icon box-hover" :id="`${MessageId}like`" aria-label="button like"
           v-b-tooltip.hover title="J'aime"
         @click.prevent="addLikes" >J'aime
-              <b-icon icon="hand-thumbs-up"></b-icon> {{tabLikes.length}}
+              
         </div>
 
         <div class="box-icon box-hover dislike"  @click.prevent="addDisLikes" :id="`${MessageId}disLike`"
          v-b-tooltip.hover title="Je n'aime pas">Je n'aime pas
 
-            <b-icon icon="hand-thumbs-down"></b-icon> {{tabDisLikes.length}} 
+           
         </div>
        
            
@@ -27,7 +55,15 @@
         </div>
         </div>
               <div v-show="msgbutton" class="form-floating">
-                 <textarea v-model="msg" class="form-control" placeholder="Leave a comment here"></textarea>
+                <textarea v-model="msg" class="form-control"></textarea>
+              
+               
+                 <div v-show="error.length!==0" class=" test alert alert-danger" role="alert">
+                     <div>
+                         {{error}}
+                        
+                     </div>
+                 </div>
                      <button   @click="publier" type="button" class="btn btn-outline-info">Publier</button>
                 </div>
                     <div v-show="showCommentaire">
@@ -41,7 +77,7 @@
                           
                               <div class="zone-commentaire">
                                   <span> <strong>{{val.User.username}}</strong></span><br/>
-                                 <span class="info-date">commenté le :{{val.createdAt}}</span> 
+                                 <span class="info-date">commenté le {{val.dateCommentaire}}</span> 
                                  <div v-zoneText  class="">
                                      {{val.description}}
                                      </div>
@@ -57,8 +93,12 @@
 
 <script>
 
+
 export default{
     name:"Commentaire",
+    components:{
+   
+    },
  props:['coments','MessageId','like','disLike'],
     directives:{
         zoneText:(el)=>{
@@ -67,12 +107,12 @@ export default{
                el.style.borderRadius="2vw";
                 el.style.lineHeight="1.5";
                 el.style.padding="1.5% 3%";
-                el.style.backgroundColor="rgba(209, 216, 224,0.3)";
+                el.style.backgroundColor="rgba(217, 128, 250,0.5)";
                 
                
-                if(el.innerText.length<10){
+                if(el.innerText.length<=5){
                     el.style.width="15%"
-                    el.style.textAlign="center"
+                   // el.style.textAlign="center"
                 }
                 else if(el.innerText.length<=20){
                      el.style.width="30%";
@@ -96,9 +136,18 @@ export default{
             msgbutton:false,//boolean pour faire appparaitre la zone de saisie
            tabcommentaire:[],//array contenant tous les commentaires
            msg:"",//variable contenant le commentaire  du textarea
-            showCommentaire:true,
+            showCommentaire:true,//boolean pour faire appparaitre les commentaires
             tabLikes:[],//tableau contenant les users qui aiment le message
             tabDisLikes:[],// tableau contenant les users qui n'aiment pas le message 
+            error:"",
+            emoji:{
+                faceNegatif:"&#x1F621;",
+                facePositif:"&#x1F600;"
+
+            },
+           
+
+              
               
         }  
     },
@@ -116,9 +165,36 @@ export default{
             console.log('show:',this.tabcommentaire);
         this.showCommentaire=(this.tabcommentaire.length>=4) ? false :true;
         },
+        msgbutton(){
+            if(this.msgbutton===false){
+                this.error="";
+                this.msg="";
+            }
+        },
+        msg(){
+            if(this.msg.length!==0){
+                this.error="";
+            }
+        },
+        error(){
+            if(this.error){
+                this.msgbutton=true;
+            }
+        },
+      
     
     },
     methods:{
+        emojiShow(tab){
+            let nom="";
+            if(tab.length===0){
+                 nom="emojiHide";
+            }else{
+                nom="emojiShow";  
+            }
+            return nom;        
+        },
+     
         //attributttion des valeurs à likes et dislikes
         validAvis(){
             let validLike=false;
@@ -142,12 +218,14 @@ export default{
         });
             if(validLike){
             document.getElementById(`${this.MessageId}like`).classList.add('hide');
+                  
             }else{
                 document.getElementById(`${this.MessageId}like`).classList.remove('hide');
 
             }
             if(validDislike){
                  document.getElementById(`${this.MessageId}disLike`).classList.add('hide');
+                
             }else{
                  document.getElementById(`${this.MessageId}disLike`).classList.remove('hide');
             }
@@ -155,15 +233,19 @@ export default{
         },
 
        publier(){
+             console.log('recuperer',this.msg);
+             if(this.msg){
+             let test=new Date();
+             console.log(new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(test));
             let userId=JSON.parse(localStorage.getItem('user')).idUser;
-            let msg={
+            let msgCreated={
                  MessageId:this.MessageId,//id du message
                 description:this.msg,           
                 UserId:userId,
-                date:(new Date()).toLocaleDateString()
+                date:new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'short' }).format(test)
             }
-          console.log(msg);
-         this.$http.post('/addCommentaire', msg,{
+          console.log(msgCreated);
+         this.$http.post('/addCommentaire', msgCreated,{
                  Headers:{
                  'Content-Type':'application/json'   
               },
@@ -175,10 +257,16 @@ export default{
            }
            
           }).catch(error=>{
-              console.log(error);
+              if(error){
+                  this.error=error.response.data.message;
+              }
           });
            this.msgbutton=false;
              this.msg="";
+             this.error=""
+        }else{
+            this.error="le message envoyé ne doit pas être vide";
+        }
                
         },
         //methode axios pour  supprimer le like du user dans  tabLikes
@@ -340,7 +428,7 @@ button{
 
 
 .box-commentaire{
-   margin-bottom:2%;
+  // margin-bottom:2%;
    display:flex;
    justify-content:center;
    margin-top:2%;
@@ -365,7 +453,7 @@ button{
 .commande{
     width:100%;
     height:3.5vw;
-     color:#34495e;
+     color:#303952;
      font-size:15px;
    // background-color:#f7f1e3;
        @media(max-width:950px){
@@ -373,14 +461,15 @@ button{
             font-size:3vw;
           
         }  
-   border-top:2px solid #ecf0f1;
+   border-top:1px solid #ecf0f1;
     margin: auto;
     display: flex;
     align-items: center;
     justify-content:center;
-   //  border:1px solid red;
+    // border:1px solid red;
     .box-icon{
-        width:25%;
+        width:34%;
+       // border:1px solid red;
         height:inherit;
         text-align: center;
         cursor:pointer; 
@@ -401,20 +490,30 @@ button{
         }
     }
            .nombre-commentaire{
-           padding-top:1%;
-           width:25%;
+           width:30%;
+          // border:1px solid red;
            text-align: center;
            height: inherit;
+         @media(max-width: 950px){
+           width:60%;
+           }
           p{
             cursor: pointer;
+            display:inline-block;
+            width:100%;
+            white-space: nowrap;
+           // border:1px solid green;
+
+            height:inherit;
+           
              }
 
 }
 .box-hover{
     &:hover{
-        background-color:rgba(56, 173, 169,1.0);//rgba(241, 242, 246,0.7);
+        background-color:#f5f6fa;
         transition:all  0.5s ease-in-out;
-        color:white;
+       // color:white;
         }  
 }
 
@@ -443,6 +542,7 @@ button{
     width:80%;
     font-size:15px;
     margin-bottom:2%;
+      transition:all 1s ease-in-out;
       @media(max-width:950px){
         font-size:inherit;
     }
@@ -458,8 +558,68 @@ button{
 .hide{
   //pointer-events: none;
    opacity:0.8;
-   color:blue;
+   color:#3867d6;
+    transition:all 1s ease-in-out;
 }
+.test{
+    width:80%;
+    transition:all 1s ease-in-out;
+    text-align: center;
+    margin:auto;
+    position: relative;
+
+}
+.info-message{
+    display: flex;
+    color:#303952;
+    border-top:1px ridge #ecf0f1;
+    justify-content:space-between;
+   // border:1px solid red;
+   // background-color:#ecf0f1;
+   // align-items: center;
+    width:100%;
+    height:2.5vw;
+    @media(max-width: 950px){
+        height: 6vw;
+    }
+
+}
+.box-humeur{
+    width:50%;
+    height: inherit;
+    text-align: right;
+}
+.humeur-1{
+    display: inline-block;
+    text-align: center;
+   // border-radius:50%;
+    width:25%;
+    height:inherit;
+    white-space: nowrap;
+      text-align:right;
+
+
+}
+   .humeur-2{
+    display: inline-block;
+    text-align: center;
+    width:25%;
+    height:inherit;
+    white-space: nowrap;
+      text-align:left;
+    
+   }
+   .emojiShow{
+       opacity:1;
+       transform:scale(1);
+     transition:all 1s ease-in-out;
+   }
+   .emojiHide{
+       opacity:0;
+       transform:scale(0);
+    transition:all 1s ease-in-out;
+   }
+
 
 
 </style>

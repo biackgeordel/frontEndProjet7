@@ -1,7 +1,13 @@
 <template>
   <div id="app">
+    <header>
         <the-header></the-header>
-        <router-view></router-view>    
+    </header>
+    <main>       
+      <router-view></router-view>  
+    </main>
+     
+         
     
   </div>
 </template>
@@ -33,7 +39,18 @@ export default {
 </script>
 
 <style lang="scss">
-#app{
- font-family: 'Heebo', sans-serif;
-}
+  #app{
+    font-family: 'Shippori Antique B1', sans-serif;
+    @media(max-width:950px){
+      *{
+        font-size:4vw;
+
+      }
+      h4{
+        font-size:4vw;
+      }
+    }
+  }
+
+
 </style>

@@ -1,13 +1,14 @@
 <template>
-    <div>
-         <message></message>     
+    <div >
+
+             
+              <message></message> 
+           
     </div>
-
-
-
 </template>
 <script>
 import Message from '../user/Message.vue';
+
 export default{
 
     name:'UserHome',
@@ -20,7 +21,5 @@ export default{
 
 </script>
 <style lang="scss" scoped>
-
-
-
+   
 </style>

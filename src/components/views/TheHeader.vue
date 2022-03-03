@@ -1,24 +1,22 @@
 <template>
         <header>
-        <b-navbar class="navbar navbar-expand-lg navbar-dark bg-info">
+        <b-navbar class="navbar  navbar-expand-lg">
 
-          <b-navbar-brand class="navbar-brand" href="#">
+          <b-navbar-brand class="navbar-brand" >
               <img class="img-fluid" src="../../assets/icon-left-font-monochrome-white.png" alt="logo du site"/> 
           </b-navbar-brand>
           
             <b-navbar-nav class="nav-bard" v-if="!username">
 
-              <b-nav-item >
-                <router-link 
-                
-                  :class="{active:lien==='connexion'}"
-                  aria-current="page" :to="{name:'connexion'}">
+               <b-nav-item>
+                <router-link class="router__lien" :class="{active:lien==='connexion'}" 
+                aria-current="page" :to="{name:'connexion'}">
                   Connexion
                 </router-link>
-              </b-nav-item>
+                </b-nav-item>
 
               <b-nav-item >
-                <router-link  
+                <router-link class="router__lien"  
                   :class="{active:lien==='createdCompte'}"
                   aria-current="page" :to="{ name:'createdCompte'}">
                   Créer un compte
@@ -26,26 +24,36 @@
               </b-nav-item>
                      
             </b-navbar-nav>
-            <b-navbar-nav class="nav-bard" v-else >
+            <b-navbar-nav class="nav-bard-user" v-else >
+                <div class="cont-item">
+                     <b-nav-item>
+                        <router-link :class="{active:lien==='home'}"
+                          :to="{name:'home'}">Accueil</router-link>                   
+                      </b-nav-item>
+                      <b-nav-item>
+                        <router-link :class="{active:lien==='new'}" 
+                        :to="{name:'new'}">Partager  une image <b-icon icon="camera" font-scale="1.5">
+                        </b-icon></router-link>                    
+                      </b-nav-item>
 
-              <b-nav-item>
-                  <router-link 
-                    :class="{active:lien==='profil'}"
-                    :to="{name:'profil',params:{username:username}}"> {{ username }} <b-icon icon="person-circle"></b-icon>
-                  </router-link>
-              </b-nav-item>
+                </div>
+                <div  class="cont-item">
+                       <b-nav-item>
+                          <router-link :class="{active:lien==='profil'}"
+                            :to="{name:'profil',params:{username:username}}"> {{ username }} 
+                            <b-icon icon="person-circle"></b-icon>
+                          </router-link>
+                        </b-nav-item>
+                        <b-nav-item   @click.prevent="deconnexion">
+                           <b-link href="#">
+                             Déconnexion <b-icon  icon="power"></b-icon>
+                           </b-link>    
+                         </b-nav-item>
+                  
+                </div> 
+            
 
-              <b-nav-item>
-                <!--bouton pour afficher le modal-->                        
-              </b-nav-item>
-              <b-nav-item   @click.prevent="deconnexion">
-                <b-link href="#">
-                       Déconnexion <b-icon  icon="power"></b-icon>
-                </b-link>
-                 
-                
-                    
-              </b-nav-item>
+         
             </b-navbar-nav>
        </b-navbar>
    </header>
@@ -109,6 +117,8 @@ export default{
 <style lang="scss" scoped>
 
 .navbar{
+  background-color: #8e44ad;
+  display:flex;
   @media(max-width:950px){
     display: flex;
     flex-direction: column;
@@ -138,43 +148,99 @@ export default{
             padding-left:2%;
         }
     }
-    a{
-      text-decoration: none;
-      color:black;
-      font-family: "Roboto",sans-serif;
+     a{
+         width:inherit;
+        //border:1px solid #D980FA;
+         //border-radius:50px;
+         height:inherit; 
+          white-space: nowrap;
+         text-decoration: none;
+         color:#e6c2f1;//#ffffff;
           @media(max-width:950px){
               font-size:3vw;
      
               }
      
     }
+ 
     .active{
-      border-bottom:4px solid white;
-      padding-bottom:5px ;
-    
-    }
-    .comments{
-      width:100%;
-      padding:2%;
-      margin-bottom:2%;
-      color:#2c3e50;
-      cursor:pointer;
-      height:10vh;
-      &:hover{
-        background-color:#95a5a6;
-        transition:all,0.9s ease-in-out;
-      }
+        color:#ffffff;
+        }
 
+    .nav-bard-user{
+      display: flex;
+      flex-direction: row;
+      justify-content:flex-start;
+     // align-items: center;
+     // border: 1px solid red;
+      width:60%;
+      @media(max-width:950px){
+        width:100%;
+        flex-direction: column !important;
+         
+      }
     }
     .nav-bard{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 60%;
+     
+    // border:1px solid red;
+      width:40%;
+      position:relative;
+      left:15%;
       @media(max-width:950px){
-        justify-content: space-around;
         width:100%;
+        justify-content: space-between;
+        left:0;
+      }
+      &>li>a{
+        width:50%;
+       // border:1px solid red;
+        width: max-content;
       }
     }
+ 
+    li{
+  
+      transform: scale(1);
+       display: inline-block;
+       border:1px solid #D980FA;
+       border-radius:10px;
+       margin:2%;
+        width:inherit;
+        height: inherit;
+        text-align: center;
+         transition:all,0.5s ease-in-out;
+    
+        &:hover{
+            border:1px solid #ffffff;
+         background-color:#ffffff;
+         color:#D980FA;
+          transform: scale(1.1);
+          transition:all,0.5s ease-in-out;
+          &>a a{
+            color:#8e44ad;
+          }
+  
+         }
+             &>a {
+          display: inline-block;
+          width: max-content;
+       
+           
+          }
+      }
+       .cont-item{
+         display: flex;
+         width:50%;
+        // border:1px solid green;
+         justify-content: center;
+        @media(max-width:950px){
+          width:100%;
+         }
+
+     
+       }
+        
+  
+    
  
 </style>

@@ -1,6 +1,6 @@
 <template>
       <div>
-          <user :datas="datas" :username="username"></user>
+          <user :datas="datas" :username="user"></user>
         
       </div>
     
@@ -10,7 +10,7 @@
   import user from './user.vue'
 export default{
     name:"profil-user",
-    props:['username'],
+    props:['username','user'],
     components:{
       user
     },
@@ -26,6 +26,6 @@ export default{
 }
     
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>
