@@ -16,12 +16,7 @@ const store= new  Vuex.Store({
             bio:"",
             urlImage:""
         },
-        //allMessage
-        allMessage:[],
-        //state contenant tous les nouveaux messages pour la notification
-        commentaire:[],
-        //state contenant un seul message
-        message:{}
+   
        
     },
     mutations:{
@@ -30,19 +25,7 @@ const store= new  Vuex.Store({
             state.datas=user;
             console.log('user:',state.datas);
         },
-        //methode pour la mise à jour de la notification dans le header
-        getCommentaire(state,comments,){
-            state.commentaire=[...comments]
-        },
-        getOneMessage(state,msg){
-            state.message=msg
-            console.log('state oneMessage',state.message)
-        },
-        getAllMessage(state,allmsg){
-            console.log('param:',allmsg);
-            state.allMessage=allmsg;
-            console.log('state:',state.allMessage);
-        }
+    
 
       
         },
@@ -58,37 +41,7 @@ const store= new  Vuex.Store({
                 }
             })
         },
-        //methode pour recupéreer tous les nouveaux messages pour la notification dans le header
-        fetchGetCommentaire(context){
-            axios.get('/allCommentaire').then(response=>{
-                console.log('datas vuex',response.data);
-                if(response.status===200){
-                    context.commit('getCommentaire',response.data)
-                }
-            }).catch(error=>{
-                console.log(error);
-            })
-        },
-        fetchGetOneMessage(context,msgId){
-            axios.get(`/oneMessage/${msgId}`).then(response=>{
-                if(response.status===200){
-                    context.commit('getOneMessage',response.data);
-                }
-            }).catch(error=>{
-                console.log(error)
-            })
-
-        },
-        fetchGetAllMessage(context){
-         axios.get('/allmessage').then(response=>{
-                if(response.status===200){
-                    console.log(response.data);
-                    context.commit('getAllMessage',response.data);
-                }
-         }).catch(error=>{
-             console.log(error);
-         })
-        }
+    
      
     }
 

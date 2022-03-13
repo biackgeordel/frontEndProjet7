@@ -24,7 +24,11 @@
                             </div>
                     <div class="col-12">
                             <button type="submit" :disabled="validation" class="btn ">Connexion</button>
+                         
                     </div>
+                       <div class="alert alert-danger" role="alert" v-show="validErrorServer===true">
+                             {{msgServer}}
+                         </div>
                 </form>
                         
              </div>
@@ -50,7 +54,9 @@ export default{
             msg:"",//variable pour afficher les erreurs
             valid:false,
             validPass:false,
-            validEmail:false
+            validEmail:false,
+            validErrorServer:false,
+            msgServer:""//variable pour afficher les erreurs serveurs 
 
         }
     },
@@ -58,7 +64,6 @@ export default{
     methods:{
         validationPass(event){
             const pass=new RegExp(/^[A-Z][a-zA-Z]+[0-9]+[$!#&*]$/g);
-            //const email = new RegExp(/^[a-z]+[.a-z0-9-]+@[a-z]+[.][a-z]{2,}$/);
                 if(this.form.password.match(pass)){
                     event.target.classList.replace('is-invalid','is-valid');
                     this.validPass=false;
@@ -110,8 +115,9 @@ export default{
                 }
                 
               }).catch(error=>{
-               console.log(error);
-                this.msg=`${error.response.statusText} :${error.response.data.message}`;
+               console.log(error.message);
+                this.msgServer=(error.response)?`${error.response.statusText} :${error.response.data.message}`:
+                `${error.message}:impossible de se connecter au serveur`;
                  this.validErrorServer=true;
               })   
 
@@ -207,6 +213,10 @@ label{
 }
 .test{
     color:#c0392b;
+}
+.alert{
+    position:relative;
+    top:5%;
 }
 
 </style>

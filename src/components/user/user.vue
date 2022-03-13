@@ -19,19 +19,24 @@
         ref="modal"
         title="Modifier vos informations"
         @hidden="resetModal"
-        @show="resetModal"
+        @show="showModal"
         @ok="handleOk"
       >
         <form ref="form" @submit.prevent="handleSubmit"  enctype="multipart/form-data">
           <b-form-group  label="Ville"  label-for="ville-input">
-          <b-form-input id="ville-input" v-model="userInfo.ville" required></b-form-input>
+
+          <b-form-input id="ville-input" v-model="userInfo.ville" 
+          :placeholder="users.ville" required></b-form-input>
           </b-form-group>
 
           <b-form-group label="pays"  label-for="pays-input">
-          <b-form-input id="pays-input" v-model="userInfo.pays" required></b-form-input>
+          <b-form-input id="pays-input" v-model="userInfo.pays" 
+          :placeholder="users.pays" required></b-form-input>
           </b-form-group>
+
           <label for="textarea">Biographie</label>
-          <b-form-textarea id="textarea" v-model="userInfo.bio" placeholder="" rows="3" max-rows="6" >
+          <b-form-textarea id="textarea" v-model="userInfo.bio"
+          rows="3" max-rows="6" >
           </b-form-textarea>
            <b-form-file
            class="mt-3" plain
@@ -102,6 +107,7 @@ export default{
            bio:"",
            dossier:JSON.parse(localStorage.getItem('user')).username
          },
+     
          file:File,
          urlImage:"",
            error:"",
@@ -109,26 +115,40 @@ export default{
          
     }
     },
+     mounted(){
+      
+     },
+
     computed:{
         users(){
             return this.datas;
                   
         
         }
+  
     },
       methods: {
+        //function reset les informations de l'user
       resetModal() {
-        this.userInfo.ville= '';
+         this.userInfo.ville="";
         this.userInfo.pays="";
         this.userInfo.bio="";
         this.error=""
       },
+      showModal(){
+        this.userInfo.ville=this.users.ville;
+        this.userInfo.pays=this.users.pays;
+        this.userInfo.bio=this.users.bio;
+        
+      },
+      //function pour soumettre le formulaire de modifications des information de l'user
       handleOk(bvModalEvt) {
         // Prevent modal from closing
         bvModalEvt.preventDefault()
         // Trigger submit handler
         this.handleSubmit()
       },
+      //function pour modifier les information de l'user
       handleSubmit() {
        
         console.log(this.userInfo);
@@ -162,7 +182,7 @@ export default{
         
      
       },
-
+      // function pour changer l'iamge du profil user
      uploadImage(event){ 
             event.preventDefault();
          
@@ -199,20 +219,24 @@ export default{
          
            
         },
+        //function pour supprimer le compte
         deleteCompte(){
           const idUser=JSON.parse(localStorage.getItem('user')).idUser;
           this.$http.delete(`/deleteUser/${idUser}`).then(response=>{
             if(response.data===1){
               console.log("compte supprimé");
+           
+                 this.$nextTick(() => {
               localStorage.removeItem('user');
               localStorage.removeItem('auth');
-            window.setTimeout(()=>{
-                    this.$router.push({
-                path:'/login'
+              this.$bvModal.hide('modal-prevent-closing');
+              this.$router.push({
+                path:"/"
               })
-            },3000);
-       
+               })
             }
+          }).catch(error=>{
+            console.log(error);
           })
       
         }
@@ -233,6 +257,7 @@ export default{
               height:100%;
               margin:0%;
             }
+        background-color: #ffff;
         border:1px solid #ecf0f1;
         border-radius:2%;
         position: relative;

@@ -4,35 +4,19 @@
         <the-header></the-header>
     </header>
     <main>       
-      <router-view></router-view>  
-    </main>
-     
-         
-    
+        <router-view></router-view>  
+
+    </main>  
   </div>
 </template>
 
-
-
 <script>
-//import { mapState } from 'vuex';
 import TheHeader from "./components/views/TheHeader.vue";
 export default {
   name: 'app',
   components: {  
     TheHeader
   },
-  created(){
-   // this.$store.dispatch('fetchGetCommentaire');
-  },
-  computed:{
-   /* ...mapState([
-      'commentaire'
-    ]
-      
-    )*/
-  }
-
 }
 
   
@@ -40,17 +24,29 @@ export default {
 
 <style lang="scss">
   #app{
-    font-family: 'Shippori Antique B1', sans-serif;
-    @media(max-width:950px){
-      *{
-        font-size:4vw;
+     font-family: 'Shippori Antique B1', sans-serif;
+ 
 
-      }
-      h4{
-        font-size:4vw;
-      }
-    }
+   
   }
+  .v-enter{
+    opacity:0;
+    transform: translateY(-10px);
+ 
+  }
+  .v-enter-active{
+     transition: opacity 2s ease-in-out,transform 1s ease-in-out 1s;
+  }
+
+  .v-leave-to{
+      opacity:0;
+
+  }
+  .v-leave-active{
+    transition: opacity 1s ease-in-out,transform 1s ease-in-out 2s;
+  }
+
+
 
 
 </style>

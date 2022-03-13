@@ -14,9 +14,10 @@ export default{
     components:{
       user
     },
+ 
     created(){
         console.log( 'created profil: ',this.$router);
-        this.$store.dispatch('fetchGetOne');
+         this.$store.dispatch('fetchGetOne');
     },
     computed:{
       ...mapState([

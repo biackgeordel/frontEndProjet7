@@ -11,10 +11,10 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { library } from '@fortawesome/fontawesome-svg-core';
 /* import specific icons */
 import {faHeart} from '@fortawesome/free-solid-svg-icons'
-import {faFaceGrinBeam} from '@fortawesome/free-regular-svg-icons';
-import {faFaceFrown} from '@fortawesome/free-regular-svg-icons'
+import {faThumbsUp} from '@fortawesome/free-solid-svg-icons';
+import {faThumbsDown} from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
-library.add(faHeart,faFaceGrinBeam,faFaceFrown);
+library.add(faHeart,faThumbsUp,faThumbsDown);
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -33,6 +33,11 @@ axios.interceptors.request.use((req)=>{
   
   console.log(req)
   return req;
+});
+axios.interceptors.response.use(res=>{
+  console.log('response:',res);
+  return res;
+
 });
 
 

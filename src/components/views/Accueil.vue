@@ -1,7 +1,9 @@
 <template>
      
-       <div class="cont" >
-           <router-view ></router-view>    
+       <div>
+           <div class="cont">
+             <router-view ></router-view> 
+             </div>   
        </div>              
  
 </template>
@@ -16,10 +18,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .cont{
-    background-color:rgba(47, 54, 64,1.0);
-     //background-color:rgba(30, 39, 46,1),;
-  // background-image:url("../../assets/fond-forme-geometrique-degrade_78532-307.jpg");
- 
-  }
+     .cont{
+       background-color:#718093;
+     }
+
+
 </style>

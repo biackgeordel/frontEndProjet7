@@ -2,12 +2,12 @@
 
 ## Project setup
 ```
-yarn install
+yarn install ou npm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+yarn serve ou npm run serve
 ```
 
 ### Compiles and minifies for production
@@ -22,3 +22,5 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+### lien du dépôt github du frontend
+https://github.com/biackgeordel/frontEndProjet7

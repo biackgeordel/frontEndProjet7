@@ -1,29 +1,45 @@
 <template>
     
  <div>  
-
            <div class="info-message"> 
-                 <div class="nombre-commentaire box-hover" :class="emojiShow(tabcommentaire)"
+                
+              
+                 <div  class="nombre-commentaire box-hover" :class="emojiShow(tabcommentaire)"
                   @click.prevent="showCommentaire=!showCommentaire">
                 <p v-b-tooltip.hover title=" Voir les commentaires">
                   {{ tabcommentaire.length }} commentaires
+                
                 </p>
                 </div>
                 <div class="box-humeur">
-                    <span class="humeur-1" :class="emojiShow(tabLikes)">
+                    <div class="humeur-1" :class="emojiShow(tabLikes)">
                        <!-- Add the style and icon you want -->
                       <!-- <font-awesome-icon icon="fa-regular fa-face-grin-beam" size="lg"/>-->
-                       <span
-                        style="display:inline-block" v-html="emoji.facePositif"></span>
-                        {{tabLikes.length}}  
-                    </span>
+                       <span style="display:inline-block" v-html="emoji.facePositif"></span>
+                        {{tabLikes.length}}
+                        <div class="info_humeur like">
+                             <div v-for="(val,index) in tabLikes" :key="index">
+                                 <div>{{val.User.username}}</div>
+                             </div> 
+                        </div>
+                       
+                       
+                     
+                    </div>
                    
-                    <span class="humeur-2" :class="emojiShow(tabDisLikes)" >
+                    <div class="humeur-2" :class="emojiShow(tabDisLikes)" >
                       <!-- <font-awesome-icon icon="fa-regular fa-face-frown" size="lg" />-->
                        <span style="display:inline-block"
                        v-html="emoji.faceNegatif"></span>
-                        {{tabDisLikes.length}}  
-                    </span>
+                        {{tabDisLikes.length}}
+                        <div class="info_humeur" >
+                            <div v-for="(val,index) in tabDisLikes" :key="index">
+                                <div>{{val.User.username}}</div>
+                           </div> 
+
+                        </div>
+                       
+                    </div>
                   
                     
                 </div>
@@ -34,18 +50,19 @@
 
 
 
-        <div class="commande">
+ <div class="commande">
 
         <div class="box-icon box-hover" :id="`${MessageId}like`" aria-label="button like"
           v-b-tooltip.hover title="J'aime"
-        @click.prevent="addLikes" >J'aime
-              
+        @click.prevent="addLikes" >
+        J'aime
+         <font-awesome-icon style="position:relative;left:2%;top:-3%" icon="fa-solid fa-thumbs-up"  size="lg"/>
+             
         </div>
 
         <div class="box-icon box-hover dislike"  @click.prevent="addDisLikes" :id="`${MessageId}disLike`"
          v-b-tooltip.hover title="Je n'aime pas">Je n'aime pas
-
-           
+         <font-awesome-icon style="position:relative;left:2%;top:11%" icon="fa-solid fa-thumbs-down" size="lg"/>         
         </div>
        
            
@@ -53,38 +70,55 @@
         v-b-tooltip.hover title="Ecrire un commentaire">
              Commenter <b-icon icon="chat-dots-fill"></b-icon>
         </div>
-        </div>
-              <div v-show="msgbutton" class="form-floating">
+</div>
+            
+                  <div v-show="msgbutton" class="form-floating">
                 <textarea v-model="msg" class="form-control"></textarea>
               
-               
+            
                  <div v-show="error.length!==0" class=" test alert alert-danger" role="alert">
-                     <div>
-                         {{error}}
-                        
-                     </div>
+                     
+                            <div> {{error}}</div>
+                   
                  </div>
+              
                      <button   @click="publier" type="button" class="btn btn-outline-info">Publier</button>
                 </div>
+          
+              
                     <div v-show="showCommentaire">
-                       <div v-for="val in tabcommentaire" :key="val.id">
+                
+                       <div v-for="(val,index) in tabcommentaire" :key="index">
+                       
                            <div class="box-commentaire">
                                <div class="id-user" >
+                                   
                                    <div class="photo-user">
                                       <img :src="val.User.urlImage" alt="photo user"/>
                                    </div>
+                                  
                                </div>
-                          
+                               
                               <div class="zone-commentaire">
-                                  <span> <strong>{{val.User.username}}</strong></span><br/>
+                                  <span>
+                                       <strong>{{val.User.username}}</strong>
+                                  </span>     
+                                  <br/>
                                  <span class="info-date">commenté le {{val.dateCommentaire}}</span> 
-                                 <div v-zoneText  class="">
-                                     {{val.description}}
-                                     </div>
+                                 <div :id="val.id" v-zoneText >
+                                     {{val.description}} 
+                                   
+                                 </div>
+                                  
+
                               </div>
                          </div> 
                      </div>
+                     
                   </div>
+            
+      
+         
                          
  </div>
                        
@@ -107,7 +141,7 @@ export default{
                el.style.borderRadius="2vw";
                 el.style.lineHeight="1.5";
                 el.style.padding="1.5% 3%";
-                el.style.backgroundColor="rgba(217, 128, 250,0.5)";
+                el.style.backgroundColor="rgba(123, 237, 159,1.0)";
                 
                
                 if(el.innerText.length<=5){
@@ -145,6 +179,7 @@ export default{
                 facePositif:"&#x1F600;"
 
             },
+            display:false
            
 
               
@@ -194,6 +229,17 @@ export default{
             }
             return nom;        
         },
+        modifier(event){
+            console.log(event.target);
+            //const id=`${event.target.id}`
+            
+            document.querySelector(".modifier").style.display="block";
+           
+
+         
+
+        },
+
      
         //attributttion des valeurs à likes et dislikes
         validAvis(){
@@ -432,6 +478,8 @@ button{
    display:flex;
    justify-content:center;
    margin-top:2%;
+
+  // border:1px solid red;
 }
 .form-floating{
    position:relative;
@@ -452,31 +500,34 @@ button{
 }
 .commande{
     width:100%;
-    height:3.5vw;
+    height:4vw;
+    //border:1px solid green;
      color:#303952;
      font-size:15px;
    // background-color:#f7f1e3;
        @media(max-width:950px){
-            height:8vw;
+            height:9vw;
             font-size:3vw;
           
         }  
-   border-top:1px solid #ecf0f1;
+   border-top:2px solid #ecf0f1;
     margin: auto;
     display: flex;
-    align-items: center;
-    justify-content:center;
+    align-items:center;
+    justify-content:space-around;
     // border:1px solid red;
     .box-icon{
-        width:34%;
+        width:30%;
+        height:3vw;
        // border:1px solid red;
-        height:inherit;
         text-align: center;
         cursor:pointer; 
         padding-top:1%;
          // border:1px solid red;
         @media(max-width:950px){
             font-size:3vw;
+            height:6vw;
+              padding-top:0%;
           
         } 
           
@@ -493,9 +544,15 @@ button{
            width:30%;
           // border:1px solid red;
            text-align: center;
-           height: inherit;
+           height:3vw;
+           position:relative;
+           top:10%;
+           left:5%;
+           padding-top:0.5%;
          @media(max-width: 950px){
-           width:60%;
+              width:40%;
+              height:inherit;
+              top:0%
            }
           p{
             cursor: pointer;
@@ -511,9 +568,10 @@ button{
 }
 .box-hover{
     &:hover{
-        background-color:#f5f6fa;
-        transition:all  0.5s ease-in-out;
-       // color:white;
+        background-color:rgba(116, 125, 140,0.1);
+        transition:all 0.5s ease-in-out;
+        border-radius:5px;
+       //color:white;
         }  
 }
 
@@ -559,54 +617,76 @@ button{
   //pointer-events: none;
    opacity:0.8;
    color:#3867d6;
-    transition:all 1s ease-in-out;
+    transition:opacity 1s ease-in-out;
 }
 .test{
     width:80%;
-    transition:all 1s ease-in-out;
     text-align: center;
     margin:auto;
     position: relative;
+    top:5px;
 
 }
 .info-message{
     display: flex;
     color:#303952;
-    border-top:1px ridge #ecf0f1;
     justify-content:space-between;
    // border:1px solid red;
    // background-color:#ecf0f1;
    // align-items: center;
     width:100%;
-    height:2.5vw;
+    height:3.5vw;
     @media(max-width: 950px){
-        height: 6vw;
+        height: 8vw;
     }
 
 }
 .box-humeur{
-    width:50%;
+    width:40%;
     height: inherit;
     text-align: right;
+   // border:1px solid red;  
+    display: flex;
+    justify-content: flex-end;
 }
 .humeur-1{
     display: inline-block;
+     cursor:pointer;
+     position: relative;
+  //  border:1px solid red;
     text-align: center;
-   // border-radius:50%;
     width:25%;
+    //padding-top:3%;
     height:inherit;
     white-space: nowrap;
-      text-align:right;
+   text-align:right;
+      &:hover{
+          .info_humeur{
+              opacity: 1;
+              transition:opacity 1s ease-in-out;
+              z-index:1000;
+             
+          }
+      }
 
 
 }
    .humeur-2{
     display: inline-block;
+     cursor:pointer;
     text-align: center;
+    //padding-top:3%;
     width:25%;
     height:inherit;
     white-space: nowrap;
-      text-align:left;
+     text-align:left;
+        &:hover{
+          .info_humeur{
+              opacity: 1;
+              transition:opacity 1s ease-in-out;
+             
+          }
+      }
     
    }
    .emojiShow{
@@ -618,6 +698,21 @@ button{
        opacity:0;
        transform:scale(0);
     transition:all 1s ease-in-out;
+   }
+   .info_humeur{
+       width:120px;
+       //border:1px solid #2c3e50;
+       background-color:rgba(44, 62, 80,0.9);
+        border-radius:5px;
+       color:white;
+       text-align: center;
+       opacity: 0;
+        z-index:-1000;
+       
+   }
+   .like{
+       position:relative;  
+       left:-80px;
    }
 
 

@@ -31,8 +31,8 @@
                                       {{msg}}
                                      </div>
                             </div>
-                            <div class="test" v-show="validError">{{msg}}</div>
                             <button type="submit" :disabled="validation" class="btn">Valider</button>
+                            <div class="alert alert-danger" role="alert" v-show="validError">{{msgServer}}</div>
                     
                 </form>
                         
@@ -59,6 +59,7 @@ export default{
                 date:(new Date()).toLocaleDateString()
             },
             msg:"",//variable pour afficher les erreurs
+            msgServer:"",//variable contenant les erreurs du serveur
             validErrorServer:false,//boolean pour afficher les messages du serveur
             validPass:false, //boolean pour afficher les msgs d'erreurs du password
             validEmail:false,//boolean pour afficher les msgs d'erreurs d'email
@@ -112,10 +113,9 @@ export default{
                     });
                     }
                 }).catch(error=>{
-                    console.log(error.response);
-                    console.log('Error :',error.response.data);
-                    console.log('Error1:',error.response.statusText);
-                    this.msg=`${error.response.statusText} :${error.response.data.message}`;
+                    console.log(error.message);
+                    this.msgServer=(error.response)?`${error.response.statusText} :${error.response.data.message}`
+                    :`${error.message}: Impossible de se connecter au serveur`;
                     this.validErrorServer=true;
                });
                
@@ -149,8 +149,9 @@ export default{
                 
               }).catch(error=>{
                console.log(error);
-                this.msg=`${error.response.statusText} :${error.response.data.message}`;
-                 this.validErrorServer=true;
+                  this.msgServer=(error.response)?`${error.response.statusText} :${error.response.data.message}`
+                    :`${error.message}: Impossible de se connecter au serveur`;
+                    this.validErrorServer=true;
               })   
 
     },
@@ -252,8 +253,10 @@ label{
     color:#2f3542;;
     font-weight:bold;
 }
-.test{
-    color:#c0392b;
+.alert{
+    position:relative;
+    top:5%;
 }
+
 
 </style>

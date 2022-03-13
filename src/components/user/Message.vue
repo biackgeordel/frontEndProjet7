@@ -1,7 +1,11 @@
 <template>
    <div>
-      
-      <div class="ml" v-for="val in tabMessage" :key="val.id">
+       <transition appear="true">
+      <div v-if="tabMessage.length!==0">
+     
+     
+       
+      <div   class="ml" v-for="val in tabMessage" :key="val.id">
          <div  class="box-message">
            <div class="box-info-user">
               <div class="box-info-user__img">
@@ -27,7 +31,7 @@
                <img   :src="val.urlImage" alt="photo" :id="`${val.id}`"/>
             </div>
             <div class="title">
-                  <h4>{{val.title}}</h4>
+                  <h4> {{val.title.replace(`${val.title.charAt(0)}`,`${val.title.charAt(0).toUpperCase()}`)}}</h4>
             </div>
             <div  v-if="val.description.length>0" class="description">{{ val.description }}</div>
             <div>
@@ -39,13 +43,24 @@
                
         </div>
       </div>
+   </div>
+  
+        <div v-else>
+      <div>
+         <h1>Aucun message publié</h1>
+      </div>
+
+   </div>
+   
+   </transition>
+ 
       
    </div>
 </template>
 <script>
 
 import itemsCommentaire from "../views/Items-commentaire.vue";
-//import { mapState } from 'vuex';
+
 export default{
     name:"Message",
     components:{
@@ -61,11 +76,7 @@ export default{
     mounted(){
      this.fetchGetAllMessage();
     },
-       computed:{
-      /*  ...mapState([
-            'allMessage'
-        ]),*/
-    },
+  
    
     methods:{
        deleteMessage(val){
@@ -107,6 +118,9 @@ export default{
 .box-message{
    width:40%;
    background-color:#ffff;
+   border:1px solid #95a5a6;
+   //box-shadow:1px 1px 5px 3px #95a5a6;
+   border-radius:10px;
        @media(max-width:950px){
         width:100%;
           }
@@ -168,7 +182,7 @@ export default{
     .box-img{//image uploader
        width:100%;
        height:inherit;
-       border-top: 5px ridge rgba(26, 1, 1, 0.3);
+       border-top: 1px ridge rgba(26, 1, 1, 0.3);
        img{
           width:100%;
           height:100%;
@@ -188,11 +202,14 @@ export default{
 }
 .title{
    text-align: center;
+    //border-bottom:1px ridge #ecf0f1;
 }
 .description{
    word-break: keep-all;
    //text-align: center;
    text-align:justify;
+   border-top:1px ridge #ecf0f1;
+   border-bottom:1px ridge #ecf0f1;
    padding:2%;
 }
 

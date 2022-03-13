@@ -122,6 +122,7 @@ export default{
   @media(max-width:950px){
     display: flex;
     flex-direction: column;
+    //height:30vw;
   }
 }
 .navbar-brand{
@@ -168,31 +169,30 @@ export default{
         }
 
     .nav-bard-user{
-      display: flex;
-      flex-direction: row;
-      justify-content:flex-start;
-     // align-items: center;
-     // border: 1px solid red;
+     //border: 1px solid red;
       width:60%;
       @media(max-width:950px){
         width:100%;
         flex-direction: column !important;
          
       }
+      
+      
     }
+    //balise nav sur la page login signup
     .nav-bard{
      
     // border:1px solid red;
       width:40%;
       position:relative;
       left:15%;
+      justify-content:center;
+
       @media(max-width:950px){
         width:100%;
-        justify-content: space-between;
         left:0;
       }
       &>li>a{
-        width:50%;
        // border:1px solid red;
         width: max-content;
       }
@@ -203,41 +203,58 @@ export default{
       transform: scale(1);
        display: inline-block;
        border:1px solid #D980FA;
-       border-radius:10px;
+       border-radius:8px;
        margin:2%;
-        width:inherit;
-        height: inherit;
         text-align: center;
          transition:all,0.5s ease-in-out;
+         @media(max-width:950px){
+           height:50.5%;
+           padding:0.5%;
+         }
     
         &:hover{
-            border:1px solid #ffffff;
+            border:1px ridge transparent;
          background-color:#ffffff;
-         color:#D980FA;
+         color:hsl(284, 92%, 74%);
+         box-shadow: 0px -1px 1px 2px rgba(12, 11, 11,0.1);
           transform: scale(1.1);
           transition:all,0.5s ease-in-out;
           &>a a{
             color:#8e44ad;
+               
           }
   
          }
              &>a {
           display: inline-block;
-          width: max-content;
-       
-           
+          width:inherit;
+          height: inherit;    
           }
       }
        .cont-item{
          display: flex;
          width:50%;
         // border:1px solid green;
-         justify-content: center;
+         justify-content:flex-end;
+         &:last-child{
+         justify-content:flex-start; 
+           @media(max-width:950px){
+           justify-content:center;
+           } 
+         }
         @media(max-width:950px){
+           justify-content:center;
           width:100%;
+          height:15vw;
+          align-items: center;
          }
 
      
+       }
+       .nav-link{
+         @media(max-width:950px){
+           padding:0;
+         }
        }
         
   
