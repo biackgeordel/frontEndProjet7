@@ -11,16 +11,17 @@
                       <div class="mb-3">
                              <label for="validationEmail" class="form-label">Email</label>
                              <input type="email" @input="validationEmail" v-model="form.email" class="form-control"  id="validationEmail"  required>
-                         <div class="invalid-feedback">
+                         <div class="invalid-feedback alert alert-danger" role="alert">
                              {{msg}}
                          </div>
                         </div>
                           <div class="mb-3">
                                   <label for="validationPassword" class="form-label">password</label>
                                   <input ref="password" @input="validationPass" v-model="form.password" type="password" class="form-control " id="validationPassword" required>
-                                    <div class="invalid-feedback">
-                                      {{msg}}
-                                     </div>
+                                    <div  class="invalid-feedback alert alert-danger" role="alert">
+                                        <span v-html="msgPass"></span>
+                                    </div> 
+                                  
                             </div>
                     <div class="col-12">
                             <button type="submit" :disabled="validation" class="btn ">Connexion</button>
@@ -52,6 +53,7 @@ export default{
                 password:''
             },
             msg:"",//variable pour afficher les erreurs
+            msgPass:"",
             valid:false,
             validPass:false,
             validEmail:false,
@@ -63,15 +65,28 @@ export default{
     
     methods:{
         validationPass(event){
-            const pass=new RegExp(/^[A-Z][a-zA-Z]+[0-9]+[$!#&*]$/g);
-                if(this.form.password.match(pass)){
-                    event.target.classList.replace('is-invalid','is-valid');
-                    this.validPass=false;
-                }else{
-                   event.target.classList.add('is-invalid');
-                   this.msg="le password est invalide";
-                    this.validPass=true;
-                
+              const pass=new RegExp(/^[A-Z][a-zA-Z-0-9]+[$!#&*]$/g);
+                    if(this.form.password.length<=5){
+                       event.target.classList.add('is-invalid');
+                       this.msgPass="Le mot de passe doit contenir au moins 6 caractères.<br/>"+
+                       "Le mot de passe doit"+
+                       " commencer par une lettre maj  suivi des lettres"+
+                       " alphanumeriques et doit se terminer par un caractère spécial exemple: ($!#&*)";
+                       this.validPass=true;
+                       
+                    }
+                    else {
+                        if(this.form.password.match(pass)){
+                        event.target.classList.replace('is-invalid','is-valid');
+                        this.validPass=false;
+                   }else{
+                       event.target.classList.add('is-invalid');
+                       this.msgPass="Le mot de passe doit"+
+                       " commencer par une lettre maj  suivi des lettres"+
+                       " alphanumeriques et doit se terminer par un caractère spécial exemple: ($!#&*)";
+                       this.validPass=true;
+                     }
+              
                 }
                        
                    },
@@ -84,7 +99,7 @@ export default{
                     
                 }else{
                    event.target.classList.add('is-invalid');
-                   this.msg="email est invalide";
+                   this.msg="Email saisi n'est pas valide";
                       this.validEmail=true;
                 }
            },
@@ -98,7 +113,8 @@ export default{
             //on recupere les données de l'user stockées dans la BD
                   this.user={
                  username:response.data.username,
-                 idUser:response.data.id
+                 idUser:response.data.id,
+                 admin:response.data.admin
                   };
                   const token=response.data.token;
                   //on stoke les informations de l'user dans le localStorage
@@ -116,7 +132,7 @@ export default{
                 
               }).catch(error=>{
                console.log(error.message);
-                this.msgServer=(error.response)?`${error.response.statusText} :${error.response.data.message}`:
+                this.msgServer=(error.response)?`${error.response.data.message}`:
                 `${error.message}:impossible de se connecter au serveur`;
                  this.validErrorServer=true;
               })   
@@ -185,11 +201,14 @@ export default{
         }
     }
     .form{
-        display: flex;
+          display: flex;
         flex-direction: column;
+        border: 1px solid #8e44ad;
+        border-radius:10px;
+        padding:5%;
          width:80%;
          margin:auto;
-         height:inherit;
+         height:min-content;
          input{
              width:100%;
              height: inherit;
@@ -216,7 +235,7 @@ label{
 }
 .alert{
     position:relative;
-    top:5%;
+    top:10px;
 }
 
 </style>

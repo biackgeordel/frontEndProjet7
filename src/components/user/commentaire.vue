@@ -7,7 +7,7 @@
                  <div  class="nombre-commentaire box-hover" :class="emojiShow(tabcommentaire)"
                   @click.prevent="showCommentaire=!showCommentaire">
                 <p v-b-tooltip.hover title=" Voir les commentaires">
-                  {{ tabcommentaire.length }} commentaires
+                  {{ tabcommentaire.length}} commentaires
                 
                 </p>
                 </div>
@@ -72,55 +72,53 @@
         </div>
 </div>
             
-                  <div v-show="msgbutton" class="form-floating">
-                <textarea v-model="msg" class="form-control"></textarea>
-              
-            
-                 <div v-show="error.length!==0" class=" test alert alert-danger" role="alert">
-                     
-                            <div> {{error}}</div>
-                   
-                 </div>
-              
-                     <button   @click="publier" type="button" class="btn btn-outline-info">Publier</button>
-                </div>
-          
-              
-                    <div v-show="showCommentaire">
-                
-                       <div v-for="(val,index) in tabcommentaire" :key="index">
-                       
-                           <div class="box-commentaire">
-                               <div class="id-user" >
-                                   
-                                   <div class="photo-user">
-                                      <img :src="val.User.urlImage" alt="photo user"/>
-                                   </div>
+<div v-show="msgbutton" class="form-floating">
+     <textarea v-model="msg" class="form-control"></textarea>
+    <div v-show="error.length!==0" class=" test alert alert-danger" role="alert">
+        <p> {{error}}</p>
+     </div>
+     <button   @click="publier" type="button" class="btn btn-outline-info">Publier</button>
+    </div>
+        <div v-show="showCommentaire">
+            <div v-for="val in tabcommentaire" :key="val.id">
+                <div class="box-commentaire">
+                    <div class="id-user" >
+                         <div class="photo-user">
+                            <img :src="val.User.urlImage" alt="photo user"/>
+                         </div>
                                   
-                               </div>
+                    </div>
                                
-                              <div class="zone-commentaire">
-                                  <span>
-                                       <strong>{{val.User.username}}</strong>
-                                  </span>     
-                                  <br/>
-                                 <span class="info-date">commenté le {{val.dateCommentaire}}</span> 
-                                 <div :id="val.id" v-zoneText >
-                                     {{val.description}} 
+                    <div class="zone-commentaire">
+                        <span>
+                            <strong>{{val.User.username}}</strong>
+                        </span><br/>
+                        <span class="info-date">commenté le {{val.dateCommentaire}}</span> 
+                            <div  >
+                                <p v-zoneText>
+                                    {{val.description}} 
+                                </p>
                                    
-                                 </div>
+                            </div>
                                   
 
-                              </div>
-                         </div> 
-                     </div>
-                     
-                  </div>
-            
-      
-         
+                    </div>
+                    <div v-if="val.UserId===userId || localAdmin===true" class="btn_modifier">
+                         <button  @click.prevent="deleteCommentaire(val.id,$event)" class=" btn">
+                            <font-awesome-icon icon="fa-solid fa-trash-can" size="lg" />
+                         </button>
+                         <!--<button type="submit" class=" btn">
+                            <font-awesome-icon icon="fa-solid fa-pen" size="lg" />
+                         </button>-->
+                       
                          
- </div>
+                    </div>
+                </div> 
+           </div>
+                     
+    </div>
+            
+</div>
                        
     
 </template>
@@ -134,7 +132,7 @@ export default{
    
     },
  props:['coments','MessageId','like','disLike'],
-    directives:{
+  /*  directives:{
         zoneText:(el)=>{
             //on defini le style par defaut de la zone de texte
               el.style.overflow="break-word";
@@ -144,26 +142,35 @@ export default{
                 el.style.backgroundColor="rgba(123, 237, 159,1.0)";
                 
                
-                if(el.innerText.length<=5){
+                if(el.innerText.length<6){
                     el.style.width="15%"
-                   // el.style.textAlign="center"
+                    el.style.textAlign="center"
                 }
-                else if(el.innerText.length<=20){
-                     el.style.width="30%";
-                  el.style.lineHeight="1.2";  
+                  else if(el.innerText.length<11){
+                    el.style.width="30%"
+                    el.style.textAlign="center"
+                      //el.style.border="1px solid red";
                 }
-                else if(el.innerText.length<=60){
-                    el.style.width="45%";
+                else if(el.innerText.length<21){
+                    //el.style.border="1px solid red";
+                  el.style.width="40%";
+                  el.style.textAlign="center"
+                 // el.style.lineHeight="1.2";  
+                }
+                else if(el.innerText.length<61){
+                    el.style.width="50%";
                      el.style.lineHeight="1.2";  
-                }else if(el.innerText.length<=100){
-                      el.style.width="55%"
+                    
+                }else if(el.innerText.length<101){
+                      el.style.width="80%"
                      el.style.lineHeight="1.2";  
+                         //el.style.border="1px solid red";
                 } else{
                     el.style.width="100%";
                       el.style.borderRadius="2vw";
                 }      
         }
-    },
+    },*/
 
     data(){
         return {
@@ -179,7 +186,9 @@ export default{
                 facePositif:"&#x1F600;"
 
             },
-            display:false
+            userId:JSON.parse(localStorage.getItem('user')).idUser,
+            localAdmin:JSON.parse(localStorage.getItem('user')).admin
+         
            
 
               
@@ -206,6 +215,7 @@ export default{
                 this.msg="";
             }
         },
+
         msg(){
             if(this.msg.length!==0){
                 this.error="";
@@ -219,6 +229,12 @@ export default{
       
     
     },
+    computed:{
+        tab:function(){
+            console.log(this.tabcommentaire.length);
+            return this.tabcommentaire;
+        }
+    },
     methods:{
         emojiShow(tab){
             let nom="";
@@ -229,11 +245,32 @@ export default{
             }
             return nom;        
         },
-        modifier(event){
-            console.log(event.target);
-            //const id=`${event.target.id}`
-            
-            document.querySelector(".modifier").style.display="block";
+        //function pour supprimer un commentaire
+        deleteCommentaire(id,$event){
+            console.log(id,$event);
+            // let userId=this.userId;
+             this.$http.delete(`deleteCommentaire/${id}/${this.userId}`)
+             .then(response=>{
+            if(response.data===1){
+                for(let i=0;i<this.tabcommentaire.length;i++){
+                  if(this.tabcommentaire[i].id===id && this.tabcommentaire[i].UserId===this.userId)
+                  {
+                     console.log( 'element a supprimer:',this.tabcommentaire[i]);
+                     this.tabcommentaire.splice(i,1)
+                }else if(this.tabcommentaire[i].id===id && this.localAdmin===true){
+                         console.log( 'element a supprimer:',this.tabcommentaire[i]);
+                        this.tabcommentaire.splice(i,1)
+
+                     }
+                 }
+               
+                }
+                
+              
+               
+             }).catch(error=>{
+                 console.log(error);
+             })
            
 
          
@@ -478,8 +515,11 @@ button{
    display:flex;
    justify-content:center;
    margin-top:2%;
-
-  // border:1px solid red;
+   transition:background-color 0.5s ease-in-out;
+  &:hover{
+       background-color:rgba(120, 224, 143,0.2);
+       transition:all 0.5s ease-in-out;
+ }
 }
 .form-floating{
    position:relative;
@@ -597,10 +637,9 @@ button{
  }
 }
 .zone-commentaire{
-    width:80%;
+    width:75%;
     font-size:15px;
     margin-bottom:2%;
-      transition:all 1s ease-in-out;
       @media(max-width:950px){
         font-size:inherit;
     }
@@ -692,11 +731,13 @@ button{
    .emojiShow{
        opacity:1;
        transform:scale(1);
+       transform-origin: center;
      transition:all 1s ease-in-out;
    }
    .emojiHide{
        opacity:0;
        transform:scale(0);
+         transform-origin: center;
     transition:all 1s ease-in-out;
    }
    .info_humeur{
@@ -713,6 +754,16 @@ button{
    .like{
        position:relative;  
        left:-80px;
+   }
+   .btn_modifier{
+       display: flex;
+        width:inherit;
+        height: inherit;
+       button{
+           font-size:10px;
+           width:inherit;
+           height:fit-content;
+       }
    }
 
 

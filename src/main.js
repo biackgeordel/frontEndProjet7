@@ -13,8 +13,12 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {faHeart} from '@fortawesome/free-solid-svg-icons'
 import {faThumbsUp} from '@fortawesome/free-solid-svg-icons';
 import {faThumbsDown} from '@fortawesome/free-solid-svg-icons'
+import {faTrashCan} from '@fortawesome/free-solid-svg-icons';
+import {faPen} from '@fortawesome/free-solid-svg-icons';
+import {faUserGear} from '@fortawesome/free-solid-svg-icons';
+import {faUser} from '@fortawesome/free-solid-svg-icons'
 /* add icons to the library */
-library.add(faHeart,faThumbsUp,faThumbsDown);
+library.add(faHeart,faThumbsUp,faThumbsDown,faTrashCan,faPen,faUserGear,faUser);
 
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -45,6 +49,48 @@ axios.interceptors.response.use((res)=>{
  
   return res;
 });
+
+//directive global
+Vue.directive('zoneText', {
+inserted: function (el) {
+    console.log(el);
+    el.style.overflow="break-word";
+    el.style.borderRadius="2vw";
+     el.style.lineHeight="1.5";
+     el.style.padding="1.5% 3%";
+     el.style.backgroundColor="rgba(123, 237, 159,1.0)";
+     
+    
+     if(el.innerText.length<6){
+         el.style.width="17%"
+         el.style.textAlign="center"
+     }
+       else if(el.innerText.length<11){
+         el.style.width="22%"
+         el.style.textAlign="center"
+           //el.style.border="1px solid red";
+     }
+     else if(el.innerText.length<21){
+         //el.style.border="1px solid red";
+       el.style.width="40%";
+       el.style.textAlign="center"
+      // el.style.lineHeight="1.2";  
+     }
+     else if(el.innerText.length<61){
+         el.style.width="50%";
+          el.style.lineHeight="1.2";  
+         
+     }else if(el.innerText.length<101){
+           el.style.width="80%"
+          el.style.lineHeight="1.2";  
+              //el.style.border="1px solid red";
+     } else{
+         el.style.width="100%";
+           el.style.borderRadius="2vw";
+     }      
+
+  }
+})
 
 Vue.config.productionTip = false;
 

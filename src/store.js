@@ -16,9 +16,9 @@ const store= new  Vuex.Store({
             bio:"",
             urlImage:""
         },
-   
-       
+     
     },
+ 
     mutations:{
         //methode pour la mise à jour de l'user
         getUser(state,user){

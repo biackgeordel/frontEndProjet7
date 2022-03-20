@@ -19,7 +19,7 @@ export default {
 
 <style lang="scss" scoped>
      .cont{
-       background-color:#718093;
+       background-color:rgba(116, 125, 140,1.0)//#ecf0f1;
      }
 
 

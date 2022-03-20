@@ -1,10 +1,13 @@
 <template>
    <div>
-       <transition appear="true">
-      <div v-if="tabMessage.length!==0">
-     
-     
-       
+   
+      <div class="contBox">
+         <div class="titre">
+              <h1>Bienvenu sur votre espace userhome </h1>
+          <div>nombre de messages publiés:{{tabMessage.length}}</div>
+
+         </div>
+        
       <div   class="ml" v-for="val in tabMessage" :key="val.id">
          <div  class="box-message">
            <div class="box-info-user">
@@ -22,7 +25,7 @@
              </div>
 
               <div class="box-info-user__btn">
-                 <button v-if="val.User.username===localUsername" 
+                 <button v-if="val.User.username===localUsername || localAdmin===true " 
                  @click.stop="deleteMessage(val)"
                  v-b-tooltip.hover title="supprimer l'image">X</button>
               </div>             
@@ -45,14 +48,9 @@
       </div>
    </div>
   
-        <div v-else>
-      <div>
-         <h1>Aucun message publié</h1>
-      </div>
-
-   </div>
    
-   </transition>
+   
+  
  
       
    </div>
@@ -70,15 +68,17 @@ export default{
     data(){
        return{
           localUsername:JSON.parse(localStorage.getItem('user')).username,
-          tabMessage:[]
+          tabMessage:[],
+          localAdmin:JSON.parse(localStorage.getItem('user')).admin
        }
     },
-    mounted(){
+    created(){
      this.fetchGetAllMessage();
     },
   
    
     methods:{
+       //function pour supprimer un message
        deleteMessage(val){
           console.log('id du message',val.id);
           const messageId=val.id;
@@ -93,6 +93,7 @@ export default{
              }
           })
        },
+       //function pour recupérertous les messages
        fetchGetAllMessage(){
              this.$http.get('/allmessage').then(response=>{
                 if(response.status===200){
@@ -124,10 +125,6 @@ export default{
        @media(max-width:950px){
         width:100%;
           }
-  // border:1px solid #bdc3c7;
-  // box-shadow: 1px 1px 6px #bdc3c7,1px 1px 6px #bdc3c7;
-   
-  // border:1px solid red;
    .box-info-user{
       height:3.5vw;
       display: flex;
@@ -211,6 +208,17 @@ export default{
    border-top:1px ridge #ecf0f1;
    border-bottom:1px ridge #ecf0f1;
    padding:2%;
+}
+.titre{
+   width:100%;
+   text-align: center;
+   color:#ecf0f1;
+}
+.contBox{
+    display:flex;
+   flex-direction: column;
+  
+
 }
 
   

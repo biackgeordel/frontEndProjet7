@@ -160,21 +160,36 @@ export default{
 <style lang="scss" scoped>
 .form{
     width:50%;
+    background-color: #ecf0f1;
+      padding-left: 2%;
+        padding-right: 2%;
+        padding-top:2%;
     margin:auto;
+       @media(max-width:950px){
+        width: 100%;
+        margin:0px;
+        padding-left: 2%;
+        padding-right: 2%;
+    }
  
 }
 .dropzone{
-    width:25vw;
+    width:50%;
     height: 20vw;
     margin:auto;
-    margin-top:3%;
+  //  margin-top:3%;
+   // padding-block:3%;
+       @media(max-width:950px){
+        width: 50%;
+        height: 40vw;
+    }
     img{
         width:100%;
         height:100%
     }
     .box-drop{
         width:100%;
-        background-color: #2980b9;
+        background-color:#8e44ad;
         height:100%;
         color:#ecf0f1;
       display: flex;
