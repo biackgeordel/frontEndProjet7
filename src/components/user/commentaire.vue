@@ -32,7 +32,7 @@
                        <span style="display:inline-block"
                        v-html="emoji.faceNegatif"></span>
                         {{tabDisLikes.length}}
-                        <div class="info_humeur" >
+                        <div class="info_humeur like" >
                             <div v-for="(val,index) in tabDisLikes" :key="index">
                                 <div>{{val.User.username}}</div>
                            </div> 
@@ -104,14 +104,10 @@
 
                     </div>
                     <div v-if="val.UserId===userId || localAdmin===true" class="btn_modifier">
-                         <button  @click.prevent="deleteCommentaire(val.id,$event)" class=" btn">
+                         <button  @click.prevent="deleteCommentaire(val.id,$event)" class=" btn"
+                           v-b-tooltip.hover title="supprimer le commentaire">
                             <font-awesome-icon icon="fa-solid fa-trash-can" size="lg" />
-                         </button>
-                         <!--<button type="submit" class=" btn">
-                            <font-awesome-icon icon="fa-solid fa-pen" size="lg" />
-                         </button>-->
-                       
-                         
+                         </button>   
                     </div>
                 </div> 
            </div>
@@ -132,45 +128,6 @@ export default{
    
     },
  props:['coments','MessageId','like','disLike'],
-  /*  directives:{
-        zoneText:(el)=>{
-            //on defini le style par defaut de la zone de texte
-              el.style.overflow="break-word";
-               el.style.borderRadius="2vw";
-                el.style.lineHeight="1.5";
-                el.style.padding="1.5% 3%";
-                el.style.backgroundColor="rgba(123, 237, 159,1.0)";
-                
-               
-                if(el.innerText.length<6){
-                    el.style.width="15%"
-                    el.style.textAlign="center"
-                }
-                  else if(el.innerText.length<11){
-                    el.style.width="30%"
-                    el.style.textAlign="center"
-                      //el.style.border="1px solid red";
-                }
-                else if(el.innerText.length<21){
-                    //el.style.border="1px solid red";
-                  el.style.width="40%";
-                  el.style.textAlign="center"
-                 // el.style.lineHeight="1.2";  
-                }
-                else if(el.innerText.length<61){
-                    el.style.width="50%";
-                     el.style.lineHeight="1.2";  
-                    
-                }else if(el.innerText.length<101){
-                      el.style.width="80%"
-                     el.style.lineHeight="1.2";  
-                         //el.style.border="1px solid red";
-                } else{
-                    el.style.width="100%";
-                      el.style.borderRadius="2vw";
-                }      
-        }
-    },*/
 
     data(){
         return {
@@ -314,7 +271,7 @@ export default{
             }
 
         },
-
+        //function pour publier un commentaire
        publier(){
              console.log('recuperer',this.msg);
              if(this.msg){
@@ -409,7 +366,7 @@ export default{
                         console.log(error)
                     })
         },
-
+        //methode axios pour supprimer le dislike du user dans tabLikes
         axiosDeleteDisLike(userId){
             let validDislike=false;
             let idDisLike="";
@@ -444,6 +401,7 @@ export default{
        
 
         },
+        //function pour ajouter un like
         axiosAddDisLike(userId){
           this.$http.post('/addDisLike',
             {
@@ -480,7 +438,7 @@ export default{
                
               },
               
-
+        //function pour ajouter un dislike
          addDisLikes(){
           
             let userId=JSON.parse(localStorage.getItem('user')).idUser;
@@ -535,7 +493,9 @@ button{
     button{
         display: inline-block;
         position:relative;
+        top:5%;
         left:5%;
+
     }
 }
 .commande{
@@ -617,13 +577,14 @@ button{
 
 .id-user{
  width:9%;
- //padding-left:1%;
+ 
  .photo-user{
     width:3vw;
     height:3vw;
  @media(max-width:950px){
-      width:8vw;
-    height:8vw;
+    width:7vw;
+    height:7vw;
+    padding-left:0.5%;
        
     }
     margin-top:5%;
@@ -670,9 +631,6 @@ button{
     display: flex;
     color:#303952;
     justify-content:space-between;
-   // border:1px solid red;
-   // background-color:#ecf0f1;
-   // align-items: center;
     width:100%;
     height:3.5vw;
     @media(max-width: 950px){
@@ -759,10 +717,17 @@ button{
        display: flex;
         width:inherit;
         height: inherit;
+          @media(max-width:950px){
+            width:min-content;
+            height: min-content;
+           }
        button{
            font-size:10px;
            width:inherit;
            height:fit-content;
+           @media(max-width:950px){
+               font-size:2vw;
+           }
        }
    }
 

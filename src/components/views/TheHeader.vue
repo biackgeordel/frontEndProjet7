@@ -134,7 +134,6 @@ export default{
      
         }
       
-       // border:1px solid green;
 
        img{
             display: inline-block;
@@ -208,8 +207,9 @@ export default{
         text-align: center;
          transition:all,0.5s ease-in-out;
          @media(max-width:950px){
-           height:50.5%;
+          // height:max-content;
            padding:0.5%;
+     
          }
     
         &:hover{
@@ -230,6 +230,10 @@ export default{
           width:inherit;
           height: inherit;    
           }
+          .nav-item{
+            width:max-content;
+            height: max-content;
+          }
       }
        .cont-item{
          display: flex;
@@ -240,6 +244,7 @@ export default{
          justify-content:flex-start; 
            @media(max-width:950px){
            justify-content:center;
+        
            } 
          }
         @media(max-width:950px){

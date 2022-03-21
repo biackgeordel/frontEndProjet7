@@ -116,6 +116,16 @@ export default{
 
 </script>
 <style lang="scss" scoped>
+p,span,div,strong,button{
+   @media(max-width: 950px){
+      font-size:3vw;
+   }
+   h1,h4{
+       @media(max-width: 950px){
+      font-size:4vw;
+   }
+   }
+}
 .box-message{
    width:40%;
    background-color:#ffff;
@@ -124,6 +134,7 @@ export default{
    border-radius:10px;
        @media(max-width:950px){
         width:100%;
+        border-radius:0px;
           }
    .box-info-user{
       height:3.5vw;
@@ -132,6 +143,7 @@ export default{
       align-items: center;
       @media(max-width:950px){
          height:15vw;
+         padding-top:3%;
       }
       &__img{
          img{
@@ -170,6 +182,7 @@ export default{
    .date{
       width:80%;
       height: inherit;
+      
    }
     .box-info-user__img{
        width: 10%;

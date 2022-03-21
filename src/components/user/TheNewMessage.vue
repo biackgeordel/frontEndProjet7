@@ -158,6 +158,11 @@ export default{
 }
 </script>
 <style lang="scss" scoped>
+input,label,button,h6{
+    @media(max-width:950px){
+        font-size:4vw;
+    }
+}
 .form{
     width:50%;
     background-color: #ecf0f1;
@@ -170,6 +175,7 @@ export default{
         margin:0px;
         padding-left: 2%;
         padding-right: 2%;
+       
     }
  
 }
