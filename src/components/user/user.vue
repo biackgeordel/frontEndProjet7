@@ -6,7 +6,7 @@
                 <div>
                   <b-img v-bind="mainProps" thumbnail
                   fluid :src="users.urlImage" :alt="'photo du profil de '+username"></b-img>
-                  <h3>photo de profil de {{username}}</h3>
+                  <h3> {{username}}</h3>
                 </div>
 
                 <div class='btn-command'>
@@ -74,11 +74,12 @@
             </div>
                 <hr/> 
             <div class="box-info">
-                <h2>Informations</h2>
-                <p>Pays:{{users.pays }}</p>
+                <h2 class="titres">Informations</h2>
+                <h6>Date de création du compte: {{users.dateUser}}</h6>
                 <p>Ville:{{users.ville }}</p>
-                <h2>Biographies:</h2> 
-                <div>
+                <p>Pays:{{users.pays }}</p>
+                <h2 class="titre">Biographies:</h2> 
+                <div class="cont_bio">
                    {{users.bio  }}
                 </div> 
                 
@@ -248,27 +249,37 @@ export default{
 
 </script>
 <style lang="scss" >
+h2,h3,p,.btn{
+     @media(max-width:950px){
+              font-size:3vw !important
+       }
+    
+}
     .box-content{
         margin:auto;
         width:50%;
-        height:50vw;
-          @media(max-width:950px){
+        //height:50vw;
+        @media(max-width:950px){
               width:100%;
               height:100%;
               margin:0%;
+              font-size:3vw
+            
             }
         background-color: #ffff;
-        border:1px solid #ecf0f1;
+        border:1px solid  #ecf0f1;
         border-radius:2%;
         position: relative;
-        margin-bottom:5%;
-        top:2vw;
+       // margin-bottom:5%;
+         top:10px;
         h2,h3{
-            color:#12181d;
+           // color:#12181d;
+             font-weight: bold;
+                color:#2c3e50;
         }
         .box-info{
             padding-left:3%;
-            p{
+            p,h6{
                 font-weight: bold;
                 color:#2c3e50;
             }
@@ -279,6 +290,7 @@ export default{
           
             button{
                 margin :2px ;
+       
             }
         }
     }
@@ -288,6 +300,28 @@ export default{
       background-color: inherit;
       font-size:xx-large;
       font-weight: bold;
+          @media(max-width:950px){
+            font-size:3vw;
+         
+            
+            }
+    }
+    .cont_bio{
+      text-align:left;
+      padding:2%;
+   
+    }
+    .titres{
+      border-bottom: solid violet;
+      border-bottom-width:10px;
+      margin-bottom:1%;
+      width: 25%;
+      @media(max-width:950px){
+        border-bottom-width:8px;
+        width: 13%;
+
+      }
+    
     }
     
 </style>

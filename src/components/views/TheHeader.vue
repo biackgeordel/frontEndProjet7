@@ -25,34 +25,30 @@
                      
             </b-navbar-nav>
             <b-navbar-nav class="nav-bard-user" v-else >
-                <div class="cont-item">
-                     <b-nav-item>
+            
+                     <b-nav-item >
                         <router-link :class="{active:lien==='home'}"
-                          :to="{name:'home'}">Accueil</router-link>                   
+                          :to="{name:'home',params:{user:username}}">Accueil</router-link>                   
                       </b-nav-item>
                       <b-nav-item>
                         <router-link :class="{active:lien==='new'}" 
-                        :to="{name:'new'}">Partager  une image <b-icon icon="camera" font-scale="1.5">
+                        :to="{name:'new',params:{user:username}}">Partager  une image <b-icon icon="camera" font-scale="1.5">
                         </b-icon></router-link>                    
                       </b-nav-item>
 
-                </div>
-                <div  class="cont-item">
-                       <b-nav-item>
-                          <router-link :class="{active:lien==='profil'}"
-                            :to="{name:'profil',params:{username:username}}"> {{ username }} 
+            
+               
+                       <b-nav-item >
+                          <router-link :class="{active:lien==='profil'}" 
+                            :to="{name:'profil',params:{user:username}}"> {{ username }} 
                             <b-icon icon="person-circle"></b-icon>
                           </router-link>
                         </b-nav-item>
-                        <b-nav-item   @click.prevent="deconnexion">
+                        <b-nav-item   @click.prevent="deconnexion" >
                            <b-link href="#">
                              Déconnexion <b-icon  icon="power"></b-icon>
                            </b-link>    
                          </b-nav-item>
-                  
-                </div> 
-            
-
          
             </b-navbar-nav>
        </b-navbar>
@@ -94,9 +90,7 @@ export default{
            return  this.$route.name;
            
          },
-         commentaires(){
-           return this.commentaire
-         }
+     
  },
  methods:{
    deconnexion(){
@@ -168,11 +162,15 @@ export default{
         }
 
     .nav-bard-user{
-     //border: 1px solid red;
+     
       width:60%;
       @media(max-width:950px){
         width:100%;
-        flex-direction: column !important;
+        flex-direction: row !important;
+        justify-content: space-around !important;
+        align-items:center;
+       // border: 1px solid red;
+        flex-wrap: wrap;
          
       }
       
@@ -207,8 +205,9 @@ export default{
         text-align: center;
          transition:all,0.5s ease-in-out;
          @media(max-width:950px){
-          // height:max-content;
+          height:max-content;
            padding:0.5%;
+           width: min-content;
      
          }
     

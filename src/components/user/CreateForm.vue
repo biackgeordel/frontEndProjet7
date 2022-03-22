@@ -9,7 +9,8 @@
                <div class="element_form_compte">
                     <h2 v-show="!form.admin">Créer un compte</h2>
                     <h2 v-show="form.admin">Créer un compte admin</h2>
-                    <button  class="btn "  @click="change">
+                    <button  class="btn "  @click="change"
+                     v-b-tooltip.hover :title="titleCompte">
                     <font-awesome-icon :icon="iconCompte" size="lg" />
                     </button>
                 </div>
@@ -71,6 +72,7 @@ export default{
                   admin:false
                 
             },
+            titleCompte:"créer un compte admin",
             msg:"",//variable pour afficher le msg d'erreur d'email
             msgPass:"",
             msgUsername:"",//variable pour afficher le msg d'erreur de l'username
@@ -102,7 +104,7 @@ export default{
             this.validUsername=true;
 
             }else{
-             const username=new RegExp(/^[a-z-A-Z]+[\s]?[a-z-A-Z-0-9]+$/g);
+             const username=new RegExp(/^[a-z-A-Z]+[\s]{0,1}[\w]+$/g);
             if(this.form.username.match(username)){
                     event.target.classList.replace('is-invalid','is-valid');
                     this.validUsername=false;
@@ -223,6 +225,7 @@ export default{
         this.form.admin=!this.form.admin;
         //on modifie l'icon compte en fonction de la valeur de form.admin
         this.iconCompte=(this.form.admin===true)?"fa-solid fa-user-gear":"fa-solid fa-user";
+        this.titleCompte=(this.form.admin===true)?"Créer un compte":"Créer un compte admin"
 
     }
   
@@ -357,6 +360,7 @@ label{
     position:relative;
     top:10px;
 }
+
 
 
 

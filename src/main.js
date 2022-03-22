@@ -77,8 +77,9 @@ inserted: function (el) {
       // el.style.lineHeight="1.2";  
      }
      else if(el.innerText.length<61){
-         el.style.width="50%";
-          el.style.lineHeight="1.2";  
+         el.style.width="55%";
+          el.style.lineHeight="1.2"; 
+         // el.style.border="1px solid red"; 
          
      }else if(el.innerText.length<101){
            el.style.width="80%"

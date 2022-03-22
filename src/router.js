@@ -34,6 +34,7 @@ export default new vueRouter({
         {
             path:"/Accueil/:user",
             component:Accueil,
+           
             beforeEnter:(to,from,next)=>{
                 if(localStorage.getItem('auth')){
             
@@ -55,13 +56,14 @@ export default new vueRouter({
                 path:'new-message',
                 name:'new',
                  component:TheNewMessage,
+               
                  props:true
                   }, 
                   {
                     path:'message/:id',
                     name:"one",
                     component:OneMessage,
-                    props:true
+                   props:true
                     
                 },
                 {
@@ -81,6 +83,7 @@ export default new vueRouter({
             beforeEnter:(to,from,next)=>{
                 if(localStorage.getItem('user')){
                     localStorage.removeItem('user');
+                    localStorage.removeItem('auth');
                     next();
                 }else{
                   next()
